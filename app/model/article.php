@@ -42,7 +42,7 @@ function get_pdo(){
  * @param $art_id
  * @return mixed
  */
-function get_article_a_sql($art_id):array
+function get_article_a_sql($art_id):null
 {
     $q = <<<SQL
 SELECT 
@@ -58,10 +58,13 @@ SQL;
 
     $pdo = get_pdo();
     $stmt = $pdo->prepare($q);
-    $stmt->execute([':art_id' => $art_id]);
-    // Debug temporaire
-    error_log("Article ID $art_id - Image: " . ($result['image_name'] ?? 'NULL'));
-    return $stmt->fetch();
+    $stmt->execute(['art_id' => $art_id]);
+
+    $result = $stmt->fetch();
+
+    // error_log("Article ID $art_id - Image: " . ($result['image_name'] ?? 'NULL'));
+
+    return $result ?: null;
 }
 function get_latest_articles_by_category($category_id, $limit = 10)
 {
@@ -88,4 +91,34 @@ SQL;
 }
 // Pour les 10 derniers articles de la catégorie id 146 : "On n'est pas des pigeons"
 $latest_articles = get_latest_articles_by_category(146);
+
+function get_all_dates_article(): array
+{
+    $q = "SELECT DISTINCT DATE(date_art) AS date FROM t_article ORDER BY date DESC";
+    $pdo = get_pdo();
+    $stmt = $pdo->prepare($q);
+    $stmt->execute();
+    return array_map(fn($row) => $row['date'], $stmt->fetchAll());
+}
+
+function get_articles_by_date(string $date): array
+{
+    $q = <<<SQL
+SELECT 
+    id_art AS id,
+    title_art AS title,
+    hook_art AS hook,
+    content_art AS content,
+    date_art AS date_published, 
+    image_art AS image_name
+FROM t_article 
+WHERE DATE(date_art) = :selected_date
+ORDER BY date_art DESC
+SQL;
+
+    $pdo = get_pdo();
+    $stmt = $pdo->prepare($q);
+    $stmt->execute(['selected_date' => $date]);
+    return $stmt->fetchAll();
+}
 

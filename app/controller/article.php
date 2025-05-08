@@ -21,5 +21,4 @@ function main_article(): string
         html_article_main($article_a),
         html_foot(),
     ]);
-
 }

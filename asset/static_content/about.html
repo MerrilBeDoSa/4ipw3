@@ -1,16 +1,347 @@
-<h2>A propos de nous</h2>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Documentation du Projet MVC - À propos</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+        h1, h2, h3 { color: #1F8DD6; }
+        h1 { border-bottom: 2px solid #1F8DD6; padding-bottom: 5px; }
+        pre { background: #f4f4f4; padding: 10px; }
+        ul { margin-left: 20px; }
+        .section { margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+
+<h1> Projet MVC</h1>
+
 <p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt orci sed dolor rhoncus mattis. Curabitur bibendum lectus eu finibus mollis. Nullam eu dapibus nunc. Nunc venenatis risus eget enim tempor condimentum. Sed nisi velit, tincidunt sed nulla nec, blandit rhoncus ex. Morbi cursus libero sed nisl commodo vulputate. Aliquam vulputate consectetur varius. Suspendisse interdum mollis nisl, ut scelerisque augue. Nulla dictum tortor at vestibulum pharetra.
+    Les fonctionnalités spécifiques demandées pour le groupe :
 </p>
-<p>
-Suspendisse dapibus ante vel cursus mollis. Curabitur mattis massa diam. Duis elit magna, tempus ac tellus a, ullamcorper venenatis est. Aliquam elementum eleifend sem. Pellentesque faucibus erat ac convallis dictum. Ut suscipit elit nulla, at volutpat elit consequat ac. Etiam consequat venenatis hendrerit.
-</p>
-<p>
-Morbi bibendum risus eget massa fermentum condimentum. Proin feugiat diam viverra elementum vulputate. Curabitur pretium urna augue, et lacinia nunc aliquam vitae. Maecenas porta consequat massa, vitae tincidunt dolor congue ut. Nulla hendrerit mauris tortor, nec faucibus diam interdum vitae. Phasellus est enim, lacinia quis efficitur eget, luctus in mi. Nullam dui massa, faucibus at sapien in, eleifend bibendum risus. Vivamus suscipit ac odio pretium auctor.
-</p>
-<p>
-Proin eget ipsum at lectus convallis elementum eleifend sit amet orci. Sed volutpat consequat arcu sed ornare. Vivamus finibus nisl eget felis lacinia, vehicula cursus risus lacinia. Morbi nec mollis diam, ut lobortis enim. Suspendisse rutrum fringilla purus, sit amet iaculis ligula fringilla sed. Nunc aliquet, felis a euismod hendrerit, velit risus posuere ligula, ut suscipit sem enim finibus nulla. Donec rutrum sit amet ipsum at vestibulum. Donec eu dui in risus ornare interdum.
-</p>
-<p>
-Duis tempus lectus vitae tellus semper laoreet in ac ante. Vivamus lacus lorem, semper ac euismod in, tristique vitae nibh. Nunc ac orci finibus, blandit dolor nec, tincidunt ipsum. Nam non metus libero. Vestibulum vitae vulputate velit. Donec sit amet sodales lacus. Nullam maximus bibendum ex, vel dignissim libero viverra a. Suspendisse tempor eleifend lorem, vel lobortis tortor tristique nec. Etiam et pharetra ante. Donec quis ligula vitae felis aliquam malesuada. Sed ante tellus, finibus eu posuere ac, malesuada sit amet neque. Nam a dui neque. Sed at mi molestie, tempus lectus eget, semper quam.
-</p>
+<ul>
+    <li>Pages statiques (fichiers HTML)</li>
+    <li>Sauvegarde de l’identification via session (login)</li>
+    <li>Menu issu d’un fichier CSV</li>
+    <li>Affichage d’un contenu supplémentaire dans le menu (temps de lecture)</li>
+    <li>Affichage d’articles sur la page d’accueil (articles de la catégorie « on n'est pas des pigeons » – 10 max)</li>
+    <li>Recherche d’articles par date (date min / max)</li>
+    <li>Sauvegarde du panier d’articles favoris via session</li>
+    <li>Options de présentation : choix de thème (bordure : none, thin ou thick)</li>
+    <li>Options de présentation : choix de police (trois polices de police)</li>
+</ul>
+
+<hr>
+
+<!-- I. CONFIG -->
+<div class="section">
+    <h2>I. Répertoire /app/config</h2>
+
+    <h3>1. app.php</h3>
+    <ul>
+        <li><strong>Ajout :</strong> je rien modifier juste ajoute pour l'accueil une limite d'article par défaut const DEFAULT_ACCUEIL_LIMIT = 100;</li>
+    </ul>
+
+    <h3>2. model.php</h3>
+    <ul>
+        <li><strong>Ajout :</strong> rien fait, c'est votre code que j'utilise.</li>
+    </ul>
+</div>
+
+<hr>
+
+<!-- II. CONTROLLERS -->
+<div class="section">
+    <h2>II. Répertoire /app/controllers</h2>
+
+    <h3>1. article.php</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>main_article()</code></li>
+        <li><strong>Rôle :</strong> Récupère un article en fonction de <code>art_id</code> passé en GET par le modèle, puis génère la page détaillée en appelant le view (<code>html_article_main()</code>).</li>
+        <li><strong>Lien :</strong> Ce fichier est accessible via l’URL avec le paramètre <code>?page=article</code>.</li>
+    </ul>
+
+    <h3>2. button.php</h3>
+    <ul>
+        <li><strong>Fonctions :</strong> <code>get_font_dropdown()</code>, <code>get_bg_color_dropdown()</code>, <code>get_border_dropdown()</code></li>
+        <li><strong>Rôle :</strong> Génère les listes déroulantes pour permettre à l’utilisateur de sélectionner la police, la couleur de fond et la bordure.</li>
+    </ul>
+
+    <h3>3. common.php</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>ctrl_head()</code></li>
+        <li><strong>Rôle :</strong> C'est votre code, rien ne change, juste pour me rappeler qu'il rassemble les informations communes (menu, session) et appelle la vue d’en-tête (<code>html_head()</code>).</li>
+        <li>Utilise le modèle pour récupérer le menu à partir du fichier menu.csv.</li>
+    </ul>
+
+    <h3>4. font.php</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>main_font()</code></li>
+        <li><strong>Rôle :</strong> Traite les options de présentation (police, couleur de fond, bordure) envoyées via un formulaire et les enregistre dans la session.</li>
+        <li>Redirige ensuite l’utilisateur vers la page d’origine.</li>
+    </ul>
+
+    <h3>5. home.php</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>main_home()</code></li>
+        <li><strong>Rôle :</strong> C'est votre code, il gère la page d’accueil en récupérant le ou les articles à afficher (articles de la catégorie « on n'est pas des pigeons » représentés dans mon code par fk_category_art = 146, qui est l'id de la catégorie) et en appelant le view <code>html_home_main()</code>.</li>
+    </ul>
+
+    <h3>6. login.php</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>main_login()</code></li>
+        <li><strong>Rôle :</strong> Gère l’identification (login) et la déconnexion (logout) :
+            <ul>
+                <li>Si le formulaire est soumis, il vérifie les identifiants en appelant la fonction <code>validate_api()</code> du modèle (<em>Model/login.php</em>).</li>
+                <li>Sauvegarde l’utilisateur et son rôle dans la session en cas d’authentification réussie.</li>
+                <li>Affiche un message de bienvenue ou d’erreur selon le résultat.</li>
+            </ul>
+        </li>
+        <li><strong>Lien :</strong> Accessible via <code>?page=login</code>.</li>
+    </ul>
+
+    <h3>7. panier.php</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>main_panier()</code></li>
+        <li><strong>Rôle :</strong> Gère l’ajout et la suppression d’articles favoris dans le « panier » (stocké dans la session) et affiche la liste des favoris par le view <code>html_panier_main()</code>.</li>
+    </ul>
+
+    <h3>8. press.php</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>main_press()</code></li>
+        <li><strong>Rôle :</strong> Pour récupérer une liste d’articles (limité à 20) et afficher le contenu par le view, c'est votre code, rien ne change : <code>html_all_articles_main()</code>.</li>
+    </ul>
+
+    <h3>9. search.php (search)</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>main_search()</code></li>
+        <li><strong>Rôle :</strong> Gère la recherche d’articles par mot-clé, c'est votre code monsieur et je me suis basé sur ça pour ajouter la recherche par des dates (<code>search_date_min</code> et <code>search_date_max</code>).
+            Il récupère les données par le model et appelle le view pour afficher le formulaire de recherche et les résultats.</li>
+    </ul>
+
+    <h3>10. sponsor.php</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>main_sponsor()</code></li>
+        <li><strong>Rôle :</strong> Récupère le contenu du sponsor depuis le model (<code>get_sponsor_content()</code>) et affiche la bannière par le view <code>html_banner()</code>.</li>
+    </ul>
+
+    <h3>11. static.php</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>main_static()</code></li>
+        <li><strong>Rôle :</strong> Rien à modifier, c'est votre code, j'écris juste pour me rappeler : elle permet d’afficher des pages statiques. Il lit le contenu d’un fichier HTML situé dans <code>/asset/static_content</code> (<code>get_static_content()</code>) et assemble la page avec l’en-tête et le pied de page.</li>
+    </ul>
+
+    <h3>12. time.php</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>main_time()</code></li>
+        <li><strong>Rôle :</strong> Gère la recherche d’articles en fonction du temps de lecture souhaité :
+            <ul>
+                <li>Récupère la durée saisie par l’utilisateur.</li>
+                <li>Utilise la fonction <code>estimate_time()</code> (dans le view) pour calculer le temps de lecture de chaque article.</li>
+                <li>Filtre les articles et affiche le résultat via <code>html_time_search_form()</code> et <code>html_time_list()</code>.</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<hr>
+
+<!-- III. MODELS -->
+<div class="section">
+    <h2>III. Répertoire /app/model</h2>
+
+    <h3>1. article.php</h3>
+    <ul>
+        <li><strong>Fonctions :</strong>
+            <ul>
+                <li><code>get_article_a()</code> et <code>get_article_a_sql()</code> : Récupèrent un article spécifique via son identifiant.</li>
+                <li><code>get_all_article_ac_sql()</code> : Récupère les articles pour la page d’accueil (limités à 10, catégorie « on n'est pas des pigeons ») et pour afficher cette catégorie, je le fais en égalisant la clé étrangère au numéro correspondant à la catégorie WHERE fk_category_art = 146.</li>
+                <li><code>get_all_article_a()</code> et <code>get_all_article_a_sql()</code> : Récupèrent les articles en fonction d’un mot-clé et d’un intervalle de dates.</li>
+            </ul>
+        </li>
+        <li><strong>Rôle :</strong> Fournir l’accès aux données articles depuis la base de données via PDO.</li>
+    </ul>
+
+    <h3>2. common.php</h3>
+    <ul>
+        <li><strong>Fonctions : rien à changer, c'est votre code, je veux juste me rappeler pour toujours avoir cette connaissance</strong>
+            <ul>
+                <li><code>get_menu_csv()</code> : Lit le fichier CSV situé dans <code>/asset/database/menu.csv</code> pour générer le menu.</li>
+                <li><code>get_pdo()</code> : Gère la connexion à la base de données et retourne l’objet PDO.</li>
+            </ul>
+        </li>
+        <li><strong>Rôle :</strong> Centraliser les fonctions communes de récupération des données.</li>
+    </ul>
+
+    <h3>3. login.php</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>validate_api()</code></li>
+        <li><strong>Rôle :</strong> Interroge une API externe pour valider les identifiants d’un utilisateur.
+            <ul>
+                <li>Envoie les paramètres <code>login</code> et <code>passwd</code> via l’URL.</li>
+                <li>Décode la réponse JSON et retourne un tableau associatif indiquant si l’utilisateur est identifié.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>4. panier.php</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>get_favoris_articles()</code></li>
+        <li><strong>Rôle :</strong> Récupère les articles favoris (stockés en session) en appelant la fonction <code>get_article_a()</code> pour chaque identifiant présent dans la session.</li>
+    </ul>
+
+    <h3>5. sponsor.php</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>get_sponsor_content()</code></li>
+        <li><strong>Rôle :</strong> Récupère et décode un fichier JSON distant contenant les informations de la bannière sponsor.</li>
+    </ul>
+
+    <h3>6. static.php</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>get_static_content()</code></li>
+        <li><strong>Rôle :</strong> Lit les fichiers HTML (about.html, cgv.html) dans le dossier <code>/asset/static_content</code> pour afficher des pages statiques.</li>
+    </ul>
+</div>
+
+<hr>
+
+<!-- IV. VIEWS -->
+<div class="section">
+    <h2>IV. Répertoire /app/views</h2>
+
+    <h3>1. article.php</h3>
+    <ul>
+        <li><strong>Fonctions :</strong>
+            <ul>
+                <li><code>html_all_articles_main()</code> : Génère la liste des articles.</li>
+                <li><code>html_favorite_button()</code> : Crée les boutons pour ajouter ou retirer un article des favoris.</li>
+                <li><code>html_article_main()</code> : Affiche le détail d’un article (titre, accroche, image, contenu, date) et intègre les boutons favoris.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>2. common.php</h3>
+    <ul>
+        <li><strong>Fonctions :</strong>
+            <ul>
+                <li><code>html_head()</code> : Construit l’en-tête commun (intégrant le menu, les options de style et le formulaire de personnalisation).</li>
+                <li><code>html_foot()</code> : Génère le pied de page commun.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>3. home.php</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>html_home_main()</code></li>
+        <li><strong>Rôle :</strong> Affiche l’article principal et appelle <code>html_all_articles_main()</code> pour présenter la liste des autres articles.</li>
+    </ul>
+
+    <h3>4. login.php</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>html_login_form()</code></li>
+        <li><strong>Rôle :</strong> Affiche le formulaire de connexion. Si l’utilisateur est déjà connecté, affiche un bouton de déconnexion.</li>
+    </ul>
+
+    <h3>5. panier.php</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>html_panier_main()</code></li>
+        <li><strong>Rôle :</strong> Affiche la liste des articles favoris stockés en session.</li>
+    </ul>
+
+    <h3>6. search.php</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>html_search_form()</code></li>
+        <li><strong>Rôle :</strong> Affiche le formulaire de recherche permettant de filtrer les articles par mot-clé et par dates.</li>
+    </ul>
+
+    <h3>7. sponsor.php</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>html_banner()</code></li>
+        <li><strong>Rôle :</strong> Affiche la bannière du sponsor en utilisant les données récupérées (texte, images, lien, couleur).</li>
+    </ul>
+
+    <h3>8. time.php</h3>
+    <ul>
+        <li><strong>Fonctions :</strong>
+            <ul>
+                <li><code>html_time_search_form()</code> : Affiche le formulaire pour rechercher par temps de lecture.</li>
+                <li><code>html_time_list()</code> : Affiche la liste des articles filtrés avec leur temps de lecture calculé via <code>estimate_time()</code>.</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<hr>
+
+<!-- V. FONCTIONNALITÉS SPÉCIFIQUES DU GROUPE -->
+<div class="section">
+    <h2>V. Fonctionnalités Spécifiques</h2>
+    <ul>
+        <li>
+            <strong>Pages statiques :</strong>
+            <ul>
+                <li>Les pages statiques (À propos, CGV) sont situées dans le dossier <code>/asset/static_content</code>.</li>
+                <li>La fonction <code>get_static_content()</code> du modèle <em>static.php</em> lit ces fichiers pour les afficher.</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Identification (login) et session :</strong>
+            <ul>
+                <li>La page de connexion est gérée dans <code>/app/controllers/login.php</code> et affichée via <code>/app/views/login.php</code>.</li>
+                <li>La fonction <code>validate_api()</code> (dans <code>/app/models/login.php</code>) demande à l’API pour authentifier l’utilisateur.</li>
+                <li>Les informations de l’utilisateur (nom, rôle) sont sauvegardées en session.</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Menu dynamique à partir d’un fichier CSV :</strong>
+            <ul>
+                <li>Le fichier <code>menu.csv</code> situé dans <code>/asset/database</code> définit le menu.</li>
+                <li>La fonction <code>get_menu_csv()</code> (dans <code>/app/models/common.php</code>) lit ce fichier et le menu est affiché dans <code>html_head()</code>.</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Contenu supplémentaire au menu :</strong>
+            <ul>
+                <li>Le temps de lecture estimé des articles est calculé (via <code>estimate_time()</code> dans <code>/app/views/time.php</code>) et affiché dans la fonctionnalité de recherche par temps (<code>/app/controllers/time.php</code>).</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Présentation d’articles sur la page d’accueil :</strong>
+            <ul>
+                <li>La fonction <code>get_all_article_ac_sql()</code> dans <code>/app/models/article.php</code> récupère jusqu’à 10 articles de la catégorie « on n'est pas des pigeons ».</li>
+                <li>L’affichage est réalisé via <code>html_home_main()</code> dans <code>/app/views/home.php</code>.</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Recherche d’articles par dates :</strong>
+            <ul>
+                <li>Le contrôleur <code>search.php</code> gère la récupération des dates min et max ainsi que du mot-clé.</li>
+                <li>La vue <code>html_search_form()</code> affiche le formulaire de recherche.</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Panier d’articles favoris :</strong>
+            <ul>
+                <li>La fonctionnalité est gérée dans <code>/app/controllers/panier.php</code> et stockée en session.</li>
+                <li>Les favoris sont affichés via <code>html_panier_main()</code> dans <code>/app/views/panier.php</code>.</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Options de présentation :</strong>
+            <ul>
+                <li>La sélection de la police, de la couleur de fond et du style de bordure se fait via des listes déroulantes générées dans <code>/app/controllers/button.php</code>.</li>
+                <li>Les choix sont enregistrés en session par <code>/app/controllers/font.php</code> et appliqués dans <code>html_head()</code> (vue commune).</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<hr>
+
+<!-- VI. CONCLUSION -->
+<div class="section">
+    <h2>VI. MERCI, C'ÉTAIT SAMUEL À VOTRE SERVICE </h2>
+</div>
+
+</body>
+</html>
