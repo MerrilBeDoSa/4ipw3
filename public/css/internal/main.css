@@ -520,6 +520,11 @@ time {
     gap: 4px;
 }
 
+/**
+Ajout de la gestion des articles
+favoris avec cookies (ajout/retrait + affichage)
+ */
+
 .fav-icon
 {
     position: absolute;
