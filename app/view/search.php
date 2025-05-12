@@ -15,7 +15,7 @@ function html_search($min_readtime = 1, $max_readtime = 30, $keyword = ''){
                 <input type="range" name="min_readtime" id="min_readtime" 
                        min="1" max="30" value="$min_readtime" class="slider">
                 à
-                <span id="max-readtime-value">$max_readtime</span> min
+                <span id="max-readtime-value">$max_readtime</span> max
                 <input type="range" name="max_readtime" id="max_readtime" 
                        min="$min_readtime" max="30" value="$max_readtime" class="slider">
             </div>
