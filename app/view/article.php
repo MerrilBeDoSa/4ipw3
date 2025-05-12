@@ -74,6 +74,16 @@ function html_article_preview($article, $is_featured = false)
                 <?php endif; ?>
             </div>
         </a>
+        <!-- BOUTON FAVORI -->
+    <?php
+        // Favoris depuis cookie
+        $favorites = isset($_COOKIE['favorites']) ? json_decode($_COOKIE['favorites'], true) : [];
+        if (!is_array($favorites)) $favorites = [];
+        $is_fav = in_array($art_id, $favorites);
+
+        $heart_class = $is_fav ? 'fav-icon active' : 'fav-icon';
+    ?>
+        <a href="?page=article&art_id=<?= $art_id ?>&fav_toggle=<?= $art_id ?>" class="<?= $heart_class ?>" title="<?= $is_fav ? 'Retirer des favoris' : 'Ajouter aux favoris' ?>">❤️</a>
     </article>
     <?php
     return ob_get_clean();

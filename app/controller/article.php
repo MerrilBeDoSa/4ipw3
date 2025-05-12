@@ -6,6 +6,29 @@
  */
 function main_article(): string
 {
+    // Gestion de l'ajout/suppression de favoris
+    if (isset($_GET['fav_toggle']) && ctype_digit($_GET['fav_toggle'])) {
+        $fav_id = (int)$_GET['fav_toggle'];
+        // Lire les favoris existants (ou tableau vide)
+        $favorites = isset($_COOKIE['favorites']) ? json_decode($_COOKIE['favorites'], true) : [];
+        if (!is_array($favorites)) $favorites = [];
+
+        // Ajouter ou supprimer
+        if (in_array($fav_id, $favorites)) {
+            $favorites = array_diff($favorites, [$fav_id]);
+        } else {
+            $favorites[] = $fav_id;
+        }
+
+        // Réécriture du cookie pour 30 jours
+        setcookie('favorites', json_encode(array_values($favorites)), time() + 3600 * 24 * 30, "/");
+
+        // Redirection pour éviter les doubles actions au refresh
+        header("Location: ?page=article&art_id=" . $fav_id);
+        exit;
+    }
+
+
     $menu = get_menucsv();
     $art_id = $_GET['art_id'] ?? null;
 
