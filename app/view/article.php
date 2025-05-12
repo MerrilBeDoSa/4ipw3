@@ -43,6 +43,7 @@ function html_article_preview($article, $is_featured = false)
     $title = $article['title'] ?? 'Titre non disponible';
     $hook = $article['hook'] ?? '';
     $date = $article['date_published'] ?? 'Date inconnue';
+    $readtime = $article['readtime'] ?? null;
     $art_id = $article['id'] ?? 0;
     $image_name = $article['image_name'] ?? '';
     $image_path = !empty($image_name) ? MEDIA_ARTICLE_PATH . $image_name : '';
@@ -65,12 +66,19 @@ function html_article_preview($article, $is_featured = false)
             <p class="wsj-article-hook"><?= htmlspecialchars($hook) ?></p>
             <div class="wsj-article-meta">
                 <time class="wsj-article-date"><?= htmlspecialchars($date) ?></time>
+                <?php if ($readtime !== null): ?>
+                    <span class="wsj-readtime">
+                        <i class="bi bi-clock-fill text-primary"></i>
+                        <?= (int)$readtime ?> min
+                    </span>
+                <?php endif; ?>
             </div>
         </a>
     </article>
     <?php
     return ob_get_clean();
 }
+
 
 function html_all_articles_main($article_aa)
 {

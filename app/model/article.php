@@ -42,7 +42,7 @@ function get_pdo(){
  * @param $art_id
  * @return mixed
  */
-function get_article_a_sql($art_id):null
+function get_article_a_sql($art_id)
 {
     $q = <<<SQL
 SELECT 
@@ -64,7 +64,7 @@ SQL;
 
     // error_log("Article ID $art_id - Image: " . ($result['image_name'] ?? 'NULL'));
 
-    return $result ?: null;
+    return $result;
 }
 function get_latest_articles_by_category($category_id, $limit = 10)
 {

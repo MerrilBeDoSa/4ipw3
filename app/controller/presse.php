@@ -1,8 +1,10 @@
 <?php
 
 require_once __DIR__ . '/../model/article.php';
+require_once __DIR__ . '/../model/common.php';
 require_once __DIR__ . '/../view/template.php';
 require_once __DIR__ . '/../view/article.php';
+
 
 function main_press(): string
 {

@@ -51,6 +51,7 @@ function html_head($menu_array = [])
     <html lang="fr">
     <head>
         <title>Accueil</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
         <link rel="stylesheet" href="./css/bootstrap/bootstrap.min.css" />  <!-- lib externe -->
         <link rel="stylesheet" href="./css/internal/main.css" /> <!-- lib interne / perso -->
         <script
