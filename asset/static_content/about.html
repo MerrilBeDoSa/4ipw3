@@ -14,21 +14,21 @@
 </head>
 <body>
 
-<h1> Projet MVC</h1>
+<h1>Projet MVC</h1>
 
 <p>
     Les fonctionnalités spécifiques demandées pour le groupe :
 </p>
 <ul>
-    <li>Pages statiques (fichiers HTML)</li>
+    <li>Source des pages statiques : hardcodé (assoc array)</li>
     <li>Sauvegarde de l’identification via session (login)</li>
-    <li>Menu issu d’un fichier CSV</li>
-    <li>Affichage d’un contenu supplémentaire dans le menu (temps de lecture)</li>
-    <li>Affichage d’articles sur la page d’accueil (articles de la catégorie « on n'est pas des pigeons » – 10 max)</li>
-    <li>Recherche d’articles par date (date min / max)</li>
-    <li>Sauvegarde du panier d’articles favoris via session</li>
-    <li>Options de présentation : choix de thème (bordure : none, thin ou thick)</li>
-    <li>Options de présentation : choix de police (trois polices de police)</li>
+    <li>Menu issus d’un fichier CSV</li>
+    <li>Affichage d’un contenu supplémentaire dans le menu : (la liste des dates)</li>
+    <li>Affichage des articles sur la page d’accueil (articles de la catégorie « on n'est pas des pigeons » Max 10)</li>
+    <li>Recherche d’articles par readtime (min / max)</li>
+    <li>Sauvegarde du panier d’articles favoris via cookie</li>
+    <li>Options de présentation : choix de thème (light or dark or grey)</li>
+    <li>Options de présentation : choix du font (3 font colors)</li>
 </ul>
 
 <hr>
@@ -37,14 +37,22 @@
 <div class="section">
     <h2>I. Répertoire /app/config</h2>
 
-    <h3>1. app.php</h3>
+    <h3>1. config/app.php</h3>
     <ul>
-        <li><strong>Ajout :</strong> je rien modifier juste ajoute pour l'accueil une limite d'article par défaut const DEFAULT_ACCUEIL_LIMIT = 100;</li>
+        <li><strong>Ajout : </strong>Pas de modification au code du prof :</li>
+        <li><strong>Ajout : </strong>Définition du répertoire racine <code>ROOT_DIR</code></li>
+        <li><strong>Ajout : </strong>Constante <code>MEDIA_ARTICLE_PATH</code> pour les images d'articles</li>
+        <li><strong>Ajout : </strong>Constante <code>AJAX_ENABLED</code>(valeur par défaut : true) - prévision pour activer les appels Ajax.</li>
+        <li><strong>Ajout : </strong>Constante <code>DEFAULT_SEARCH_LIMIT</code> - fixée à 5 pour la recherche.</li>
     </ul>
 
-    <h3>2. model.php</h3>
+    <h3>2. config/model.php</h3>
     <ul>
-        <li><strong>Ajout :</strong> rien fait, c'est votre code que j'utilise.</li>
+        <li><strong>Ajout : </strong>Encore une fois pas de modification au code du prof :</li>
+        <li><strong>Ajout : </strong>Choix dynamique de la configuration locale ou en classe via <code>MACHINE</code></li>
+        <li><strong>Ajout : </strong>Constante <code>DATABASE_TYPE</code> (MySql ou CSV).</li>
+        <li><strong>Ajout : </strong>Encore une fois des paramètres de connexion MySQL (port, user, password) selon l’environnement (home/classe).</li>
+        <li><strong>Ajout : </strong>Constante <code>DATABASE_DSN</code> construite dynamiquement</li>
     </ul>
 </div>
 
@@ -52,53 +60,61 @@
 
 <!-- II. CONTROLLERS -->
 <div class="section">
-    <h2>II. Répertoire /app/controllers</h2>
+    <h2>II. Répertoire /app/controller</h2>
 
-    <h3>1. article.php</h3>
+    <h3>1. controller/article.php</h3>
     <ul>
-        <li><strong>Fonction :</strong> <code>main_article()</code></li>
-        <li><strong>Rôle :</strong> Récupère un article en fonction de <code>art_id</code> passé en GET par le modèle, puis génère la page détaillée en appelant le view (<code>html_article_main()</code>).</li>
-        <li><strong>Lien :</strong> Ce fichier est accessible via l’URL avec le paramètre <code>?page=article</code>.</li>
+        <li><strong>Ajout :</strong>Fonction<code>main_article()</code>qui affiche un seul article complet.</li>
+        <li><strong>Validation :</strong>Vérifie que le paramètre  <code>art_id</code> est bien en entier positif.</li>
+        <li><strong>Traitement :</strong>Utilise la fonction <code>get_article_a()</code> pour récupérer les données de l'article depuis le modèle.</li>
+        <li><strong>Affichage :</strong>Génère l’en-tête, le contenu de l’article (via <code>html_article_main()</code>) et le pied de page HTML.</li>
     </ul>
 
-    <h3>2. button.php</h3>
+    <h3>2. controller/dates.php</h3>
     <ul>
-        <li><strong>Fonctions :</strong> <code>get_font_dropdown()</code>, <code>get_bg_color_dropdown()</code>, <code>get_border_dropdown()</code></li>
-        <li><strong>Rôle :</strong> Génère les listes déroulantes pour permettre à l’utilisateur de sélectionner la police, la couleur de fond et la bordure.</li>
+        <li><strong>Ajout :</strong>Fonction<code>main_dates()</code> pour afficher la liste des dates distinctes des articles.</li>
+        <li><strong>Dépendances :</strong>Utilise <code>get_all_dates_article()</code> du modèle pour extraire les dates depuis la base de données.</li>
+        <li><strong>Affichage :</strong> Génère une page HTML avec l’en-tête, la liste des dates via <code>html_date_sidebar()</code> et le pied de page.</li>
     </ul>
 
-    <h3>3. common.php</h3>
+    <h3>3. controller/home.php</h3>
     <ul>
-        <li><strong>Fonction :</strong> <code>ctrl_head()</code></li>
-        <li><strong>Rôle :</strong> C'est votre code, rien ne change, juste pour me rappeler qu'il rassemble les informations communes (menu, session) et appelle la vue d’en-tête (<code>html_head()</code>).</li>
-        <li>Utilise le modèle pour récupérer le menu à partir du fichier menu.csv.</li>
+        <li><strong>Ajout :</strong> Fonction <code>main_home()</code> pour afficher la page d’accueil du site.</li>
+        <li><strong>Données :</strong> Récupère les 10 derniers articles de la catégorie <code>id = 146</code> ("On n’est pas des pigeons") grâce à <code>get_latest_articles_by_category()</code>.</li>
+        <li><strong>Affichage :</strong> Utilise <code>html_all_articles_main()</code> pour afficher les articles, avec un en-tête (menu) et un pied de page.</li>
     </ul>
 
-    <h3>4. font.php</h3>
+    <h3>4. controller/login.php</h3>
     <ul>
-        <li><strong>Fonction :</strong> <code>main_font()</code></li>
-        <li><strong>Rôle :</strong> Traite les options de présentation (police, couleur de fond, bordure) envoyées via un formulaire et les enregistre dans la session.</li>
-        <li>Redirige ensuite l’utilisateur vers la page d’origine.</li>
+        <li><strong>Ajout :</strong> Fonction <code>main_login()</code> qui gère la connexion et déconnexion des utilisateurs.</li>
+        <li><strong>Connexion :</strong> Récupération des identifiants via POST. Vérification avec la fonction <code>login_validate()</code> (modèle).</li>
+        <li><strong>Déconnexion :</strong> Via l'URL <code>?action=logout</code>, la session est détruite et l'utilisateur est redirigé vers l’accueil.</li>
+        <li><strong>Session :</strong> Utilisation de <code>$_SESSION</code> pour mémoriser les informations de connexion (nom et rôle).</li>
+        <li><strong>Affichage :</strong> Statut de l’utilisateur, message flash, formulaire ou bouton de déconnexion selon l’état connecté ou non.</li>
     </ul>
 
-    <h3>5. home.php</h3>
+    <h3>5. controller/presse.php</h3>
     <ul>
-        <li><strong>Fonction :</strong> <code>main_home()</code></li>
-        <li><strong>Rôle :</strong> C'est votre code, il gère la page d’accueil en récupérant le ou les articles à afficher (articles de la catégorie « on n'est pas des pigeons » représentés dans mon code par fk_category_art = 146, qui est l'id de la catégorie) et en appelant le view <code>html_home_main()</code>.</li>
+        <li><strong>Ajout :</strong> Fonction <code>main_press()</code> qui permet d’afficher les articles filtrés par date (via <code>?date=YYYY-MM-DD</code>).</li>
+        <li><strong>Paramètre GET :</strong> Si une date est présente dans l’URL, les articles correspondants sont récupérés avec <code>get_articles_by_date()</code>.</li>
+        <li><strong>Fallback :</strong> Si aucune date n’est passée, la liste des articles est vide (à adapter si besoin).</li>
+        <li><strong>Affichage :</strong> Utilisation de <code>html_all_articles_main()</code> pour afficher les articles dans la vue.</li>
     </ul>
 
-    <h3>6. login.php</h3>
+    <h3>6. controller/search.php</h3>
     <ul>
-        <li><strong>Fonction :</strong> <code>main_login()</code></li>
-        <li><strong>Rôle :</strong> Gère l’identification (login) et la déconnexion (logout) :
+        <li><strong>Fonction :</strong> <code>main_search()</code></li>
+        <li><strong>Rôle :</strong> Affiche tous les articles accompagnés du formulaire de recherche :
             <ul>
-                <li>Si le formulaire est soumis, il vérifie les identifiants en appelant la fonction <code>validate_api()</code> du modèle (<em>Model/login.php</em>).</li>
-                <li>Sauvegarde l’utilisateur et son rôle dans la session en cas d’authentification réussie.</li>
-                <li>Affiche un message de bienvenue ou d’erreur selon le résultat.</li>
+                <li>Récupère tous les articles grâce à la fonction <code>get_article_a()</code>.</li>
+                <li>Affiche le formulaire de recherche avec <code>html_search_form()</code>.</li>
+                <li>Affiche tous les articles (non filtrés) via <code>html_all_articles_main()</code>.</li>
             </ul>
         </li>
-        <li><strong>Lien :</strong> Accessible via <code>?page=login</code>.</li>
+        <li><strong>Lien :</strong> Accessible via <code>?page=search</code>.</li>
     </ul>
+
+    //////////////////////////////////////////////
 
     <h3>7. panier.php</h3>
     <ul>
@@ -144,51 +160,61 @@
     </ul>
 </div>
 
+//////////////////////////////////////////////
+
 <hr>
 
 <!-- III. MODELS -->
 <div class="section">
     <h2>III. Répertoire /app/model</h2>
 
-    <h3>1. article.php</h3>
+    <h3>1. model/article.php</h3>
+    <ul>
+        <li><strong>Fonctionnalités principales :</strong></li>
+        <ul>
+            <li><code>get_article_a($id)</code> : Récupère un article spécifique (par défaut l’article d’ID 1 pour la home).</li>
+            <li><code>get_article_a_sql($id)</code> : Exécute la requête SQL pour obtenir un article via son ID.</li>
+            <li><code>get_latest_articles_by_category($id, $limit)</code> : Récupère les derniers articles d’une catégorie (ex. cat. 146 = "On n’est pas des pigeons").</li>
+            <li><code>get_all_dates_article()</code> : Récupère toutes les dates distinctes des articles (utilisé pour la sidebar).</li>
+            <li><code>get_articles_by_date($date)</code> : Récupère tous les articles publiés à une date précise.</li>
+            <li><code>get_pdo()</code> : Singleton pour établir une connexion PDO à la base de données.</li>
+        </ul>
+        <li><strong>Dépend de :</strong> la constante <code>DATABASE_TYPE</code> et des infos de connexion (DSN, username, password).</li>
+    </ul>
+
+    <h3>2. model/common.php</h3>
     <ul>
         <li><strong>Fonctions :</strong>
             <ul>
-                <li><code>get_article_a()</code> et <code>get_article_a_sql()</code> : Récupèrent un article spécifique via son identifiant.</li>
-                <li><code>get_all_article_ac_sql()</code> : Récupère les articles pour la page d’accueil (limités à 10, catégorie « on n'est pas des pigeons ») et pour afficher cette catégorie, je le fais en égalisant la clé étrangère au numéro correspondant à la catégorie WHERE fk_category_art = 146.</li>
-                <li><code>get_all_article_a()</code> et <code>get_all_article_a_sql()</code> : Récupèrent les articles en fonction d’un mot-clé et d’un intervalle de dates.</li>
+                <li><code>get_menucsv()</code> : Charge les éléments du menu depuis le fichier <code>menu.csv</code> situé dans <code>/asset/database</code>.</li>
+                <li><code>get_last_dates()</code> : Génère un tableau contenant les <em>n</em> dernières dates (par défaut 7), à partir de la date du jour.</li>
             </ul>
         </li>
-        <li><strong>Rôle :</strong> Fournir l’accès aux données articles depuis la base de données via PDO.</li>
+        <li><strong>Rôle :</strong> Fournir des fonctions utilitaires réutilisables (menu dynamique, dates récentes).</li>
     </ul>
 
-    <h3>2. common.php</h3>
+    <h3>3. model/login.php</h3>
     <ul>
-        <li><strong>Fonctions : rien à changer, c'est votre code, je veux juste me rappeler pour toujours avoir cette connaissance</strong>
+        <li><strong>Fonction :</strong>
             <ul>
-                <li><code>get_menu_csv()</code> : Lit le fichier CSV situé dans <code>/asset/database/menu.csv</code> pour générer le menu.</li>
-                <li><code>get_pdo()</code> : Gère la connexion à la base de données et retourne l’objet PDO.</li>
+                <li><code>login_validate(\$input_login, \$input_password)</code> : Vérifie si le couple identifiant/mot de passe existe dans <code>login.csv</code> et retourne un tableau contenant : validité, nom et rôle.</li>
             </ul>
         </li>
-        <li><strong>Rôle :</strong> Centraliser les fonctions communes de récupération des données.</li>
+        <li><strong>Rôle :</strong> Authentifier les utilisateurs en lisant un fichier CSV local, sans base de données.</li>
     </ul>
 
-    <h3>3. login.php</h3>
+    <h3>4. model/template.php</h3>
     <ul>
-        <li><strong>Fonction :</strong> <code>validate_api()</code></li>
-        <li><strong>Rôle :</strong> Interroge une API externe pour valider les identifiants d’un utilisateur.
+        <li><strong>Fonction :</strong>
             <ul>
-                <li>Envoie les paramètres <code>login</code> et <code>passwd</code> via l’URL.</li>
-                <li>Décode la réponse JSON et retourne un tableau associatif indiquant si l’utilisateur est identifié.</li>
+                <li>Inclut <code>common.php</code> pour accéder à <code>get_menucsv()</code> sans redondance.</li>
+                <li>Initialise le menu via <code>\$menu = get_menucsv()</code>.</li>
             </ul>
         </li>
+        <li><strong>Rôle :</strong> Centraliser l’accès au menu CSV dans les autres vues ou contrôleurs.</li>
     </ul>
 
-    <h3>4. panier.php</h3>
-    <ul>
-        <li><strong>Fonction :</strong> <code>get_favoris_articles()</code></li>
-        <li><strong>Rôle :</strong> Récupère les articles favoris (stockés en session) en appelant la fonction <code>get_article_a()</code> pour chaque identifiant présent dans la session.</li>
-    </ul>
+    //////////////////////////////////////////////
 
     <h3>5. sponsor.php</h3>
     <ul>
@@ -202,52 +228,63 @@
         <li><strong>Rôle :</strong> Lit les fichiers HTML (about.html, cgv.html) dans le dossier <code>/asset/static_content</code> pour afficher des pages statiques.</li>
     </ul>
 </div>
-
+//////////////////////////////////////////////
 <hr>
 
 <!-- IV. VIEWS -->
 <div class="section">
     <h2>IV. Répertoire /app/views</h2>
 
-    <h3>1. article.php</h3>
+    <h3>1. view/article.php</h3>
     <ul>
         <li><strong>Fonctions :</strong>
             <ul>
-                <li><code>html_all_articles_main()</code> : Génère la liste des articles.</li>
-                <li><code>html_favorite_button()</code> : Crée les boutons pour ajouter ou retirer un article des favoris.</li>
-                <li><code>html_article_main()</code> : Affiche le détail d’un article (titre, accroche, image, contenu, date) et intègre les boutons favoris.</li>
+                <li><code>html_article_main()</code> : Affiche le contenu complet d’un article, avec image, titre, date, hook et texte.</li>
+                <li><code>html_article_preview()</code> : Génère un aperçu d’article (utilisé dans les listes), avec image, titre, date et hook.</li>
+                <li><code>html_all_articles_main()</code> : Affiche un article en vedette suivi des autres articles en grille (par 2).</li>
             </ul>
         </li>
+        <li><strong>Rôle :</strong> Générer le HTML pour l’affichage des articles (complet ou aperçu), dans différentes pages.</li>
     </ul>
 
-    <h3>2. common.php</h3>
+    <h3>2. view/dates.php</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>html_date_sidebar()</code></li>
+        <li><strong>Rôle :</strong> Affiche une liste verticale des dates distinctes d’articles dans une <code>&lt;aside&gt;</code>, chaque date étant un lien vers la page "Presse" avec un filtre par date (<code>?page=press&date=YYYY-MM-DD</code>).</li>
+    </ul>
+
+    <h3>3. view/home.php</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>html_body()</code></li>
+        <li><strong>Rôle :</strong> Génère une section HTML simple avec un titre et un paragraphe de bienvenue (“HOME — Ceci est notre site”).</li>
+    </ul>
+
+    <h3>4. view/login.php</h3>
     <ul>
         <li><strong>Fonctions :</strong>
             <ul>
-                <li><code>html_head()</code> : Construit l’en-tête commun (intégrant le menu, les options de style et le formulaire de personnalisation).</li>
-                <li><code>html_foot()</code> : Génère le pied de page commun.</li>
+                <li><code>html_logout_button()</code> : Génère un bouton de déconnexion.</li>
+                <li><code>form_login()</code> : Génère le formulaire HTML pour la connexion (login/password).</li>
+                <li><code>html_user_status()</code> : Affiche un message de bienvenue ou d’anonymat selon la session.</li>
+                <li><code>html_link_home()</code> : Lien de retour vers la page d’accueil.</li>
+                <li><code>html_message()</code> : Affiche un message d’erreur ou d’information.</li>
             </ul>
         </li>
+        <li><strong>Rôle :</strong> Gère l'affichage des éléments liés à la connexion utilisateur (formulaire, statut, messages).</li>
     </ul>
 
-    <h3>3. home.php</h3>
+    <h3>5. view/template.php</h3>
     <ul>
-        <li><strong>Fonction :</strong> <code>html_home_main()</code></li>
-        <li><strong>Rôle :</strong> Affiche l’article principal et appelle <code>html_all_articles_main()</code> pour présenter la liste des autres articles.</li>
+        <li><strong>Fonctions :</strong>
+            <ul>
+                <li><code>html_head()</code> : Génère le header HTML complet, incluant le menu principal, le sous-menu et le statut utilisateur.</li>
+                <li><code>html_foot()</code> : Génère le pied de page HTML avec le logo AWebWiz.</li>
+                <li><code>validate_menu_array()</code> : Vérifie la validité du tableau de menu avant affichage.</li>
+            </ul>
+        </li>
+        <li><strong>Rôle :</strong> Centralise l'affichage de l’en-tête, du menu de navigation, et du footer, en intégrant le statut de session utilisateur (connecté ou non).</li>
     </ul>
-
-    <h3>4. login.php</h3>
-    <ul>
-        <li><strong>Fonction :</strong> <code>html_login_form()</code></li>
-        <li><strong>Rôle :</strong> Affiche le formulaire de connexion. Si l’utilisateur est déjà connecté, affiche un bouton de déconnexion.</li>
-    </ul>
-
-    <h3>5. panier.php</h3>
-    <ul>
-        <li><strong>Fonction :</strong> <code>html_panier_main()</code></li>
-        <li><strong>Rôle :</strong> Affiche la liste des articles favoris stockés en session.</li>
-    </ul>
-
+    //////////////////////////////////////////////////
     <h3>6. search.php</h3>
     <ul>
         <li><strong>Fonction :</strong> <code>html_search_form()</code></li>
@@ -270,7 +307,7 @@
         </li>
     </ul>
 </div>
-
+//////////////////////////////////////////////////
 <hr>
 
 <!-- V. FONCTIONNALITÉS SPÉCIFIQUES DU GROUPE -->
@@ -340,7 +377,7 @@
 
 <!-- VI. CONCLUSION -->
 <div class="section">
-    <h2>VI. MERCI, C'ÉTAIT SAMUEL À VOTRE SERVICE </h2>
+    <h2>VI. MERCI, C'ÉTAIT MERRIL ET NILTON À VOTRE SERVICE </h2>
 </div>
 
 </body>
