@@ -24,7 +24,7 @@ function html_article_main($article_a)
 
     if (!empty($image_path)) {
         $out .= <<<HTML
-            <div class="media_article"><img src="$image_path" alt="$title" width="972"></div>
+            <div class="media_article"><img src="$image_path" class="rounded shadow-sm" loading="lazy" alt="$title" width="972"></div>
         HTML;
     }
 

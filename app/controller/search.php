@@ -21,10 +21,11 @@ function main_search()
     ]);
 }
 
-function search_articles($keyword, $min_readtime, $max_readtime)
+function search_articles($keyword, $min_readtime, $max_readtime, $limit = 10)
 {
     $pdo = get_pdo();
 
+    // Construction de la requête
     $sql = "SELECT 
                 id_art AS id,
                 title_art AS title,
@@ -41,14 +42,18 @@ function search_articles($keyword, $min_readtime, $max_readtime)
         ':max_readtime' => $max_readtime
     ];
 
-    // Ajout de la recherche par mot-clé si spécifié
+    // Recherche par mot-clé
     if (!empty($keyword)) {
         $sql .= " AND (title_art LIKE :keyword OR content_art LIKE :keyword)";
         $params[':keyword'] = "%$keyword%";
     }
+
+    // Ajout tri et limite
+    $sql .= " ORDER BY date_art DESC LIMIT $limit"; // injection directe de $limit (valeur entière)
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
 
     return $stmt->fetchAll();
 }
+
