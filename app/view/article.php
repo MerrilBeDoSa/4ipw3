@@ -92,35 +92,36 @@ function html_article_preview($article, $is_featured = false)
 
 function html_all_articles_main($article_aa)
 {
+    ob_start();
+
     if (empty($article_aa)) {
-        return '<div class="wsj-articles-container"><p>Aucun article disponible</p></div>';
+        echo '<div class="wsj-articles-container"><p>Aucun article ne correspond à votre recherche.</p></div>';
+    } else {
+        $count = count($article_aa);
+        echo "<div class=\"wsj-articles-container\">";
+        echo "<p>$count article" . ($count > 1 ? 's' : '') . " trouvé" . ($count > 1 ? 's' : '') . ".</p>";
+
+        // Article vedette
+        $featured_article = array_shift($article_aa);
+        $other_articles = array_chunk($article_aa, 2);
+
+        echo "<div class=\"wsj-featured-article\">";
+        echo html_article_preview($featured_article, true);
+        echo "</div>";
+
+        // Grille d'articles
+        echo "<div class=\"wsj-articles-grid\">";
+        foreach ($other_articles as $article_pair) {
+            echo "<div class=\"wsj-article-row\">";
+            foreach ($article_pair as $article) {
+                echo "<div class=\"wsj-article-col\">";
+                echo html_article_preview($article);
+                echo "</div>";
+            }
+            echo "</div>";
+        }
+        echo "</div></div>"; // fin des containers
     }
 
-    // Séparer le premier article (featured) des autres
-    $featured_article = array_shift($article_aa);
-    $other_articles = array_chunk($article_aa, 2); // Groupes de 2 articles
-
-    ob_start();
-    ?>
-    <div class="wsj-articles-container">
-        <!-- Article vedette en haut -->
-        <div class="wsj-featured-article">
-            <?= html_article_preview($featured_article, true) ?>
-        </div>
-
-        <!-- Grille d'articles -->
-        <div class="wsj-articles-grid">
-            <?php foreach ($other_articles as $article_pair): ?>
-                <div class="wsj-article-row">
-                    <?php foreach ($article_pair as $article): ?>
-                        <div class="wsj-article-col">
-                            <?= html_article_preview($article) ?>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    </div>
-    <?php
     return ob_get_clean();
 }

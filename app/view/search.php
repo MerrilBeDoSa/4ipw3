@@ -1,11 +1,29 @@
 <?php
-function html_search($min_readtime = 1, $max_readtime = 30, $keyword = ''){
+function html_search($min_readtime = 1, $max_readtime = 30, $keyword = '', $selected_cat = '', $category_aa = []) {
+    // Construit la liste déroulante des catégories
+
+
+    $category_options = '<option value="">-- Toutes les catégories --</option>';
+    foreach ($category_aa as $cat) {
+        $id = htmlspecialchars($cat['id_cat']);
+        $name = htmlspecialchars($cat['name_cat']);
+        $selected = ($selected_cat == $id) ? 'selected' : '';
+        $category_options .= "<option value=\"$id\" $selected>$name</option>";
+    }
+
     return <<<HTML
     <form method="post" class="search-form">
         <div class="search-section">
             <label for="name_search">Recherche par mot-clé :</label>
-            <input type="text" name="name_search" id="name_search" 
-                   value="$keyword" placeholder="Entrez un mot-clé">
+            <input type="text" name="name_search" id="name_search" value="{$keyword}" placeholder="Entrez un mot-clé">
+
+        </div>
+        
+        <div class="search-section">
+            <label for="category_filter">Catégorie :</label>
+            <select name="category_filter" id="category_filter">
+                $category_options
+            </select>
         </div>
         
         <div class="search-section">
@@ -32,7 +50,6 @@ function html_search($min_readtime = 1, $max_readtime = 30, $keyword = ''){
         const minValue = document.getElementById('min-readtime-value');
         const maxValue = document.getElementById('max-readtime-value');
 
-        // Met à jour les affichages et ajuste les bornes
         minSlider.addEventListener('input', function () {
             minValue.textContent = this.value;
             maxSlider.min = this.value;
