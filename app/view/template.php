@@ -12,6 +12,9 @@ if (session_status() === PHP_SESSION_NONE) {
 // Afficher le statut de l'utilisateur
 display_user_status();
 
+
+
+
 /**
  * Génère la partie `<head>` et l'entête avec le menu.
  *
