@@ -72,6 +72,7 @@ function html_article_preview($article, $is_featured = false)
                         <?= (int)$readtime ?> min
                     </span>
                 <?php endif; ?>
+
             </div>
         </a>
         <!-- BOUTON FAVORI -->
@@ -83,45 +84,49 @@ function html_article_preview($article, $is_featured = false)
 
         $heart_class = $is_fav ? 'fav-icon active' : 'fav-icon';
     ?>
-        <a href="?page=article&art_id=<?= $art_id ?>&fav_toggle=<?= $art_id ?>" class="<?= $heart_class ?>" title="<?= $is_fav ? 'Retirer des favoris' : 'Ajouter aux favoris' ?>">❤️</a>
+
     </article>
     <?php
     return ob_get_clean();
 }
 
 
-function html_all_articles_main($article_aa)
+function html_all_articles_main($article_aa, $is_search = false)
 {
     ob_start();
 
     if (empty($article_aa)) {
-        echo '<div class="wsj-articles-container"><p>Aucun article ne correspond à votre recherche.</p></div>';
-    } else {
-        $count = count($article_aa);
-        echo "<div class=\"wsj-articles-container\">";
-        echo "<p>$count article" . ($count > 1 ? 's' : '') . " trouvé" . ($count > 1 ? 's' : '') . ".</p>";
+        echo '<div class="wsj-articles-container">';
+        if ($is_search) {
+            echo '<p>Aucun article ne correspond à votre recherche.</p>';
+        }
+        echo '</div>';
+        return ob_get_clean(); // ← AJOUT ICI pour sortir proprement
+    }
 
-        // Article vedette
-        $featured_article = array_shift($article_aa);
-        $other_articles = array_chunk($article_aa, 2);
+    // Article vedette
+    $featured_article = array_shift($article_aa);
+    $other_articles = array_chunk($article_aa, 2);
 
-        echo "<div class=\"wsj-featured-article\">";
-        echo html_article_preview($featured_article, true);
-        echo "</div>";
+    echo "<div class=\"wsj-featured-article\">";
+    echo html_article_preview($featured_article, true);
+    echo "</div>";
 
-        // Grille d'articles
-        echo "<div class=\"wsj-articles-grid\">";
-        foreach ($other_articles as $article_pair) {
-            echo "<div class=\"wsj-article-row\">";
-            foreach ($article_pair as $article) {
-                echo "<div class=\"wsj-article-col\">";
-                echo html_article_preview($article);
-                echo "</div>";
-            }
+    // Grille d'articles
+    echo "<div class=\"wsj-articles-grid\">";
+    foreach ($other_articles as $article_pair) {
+        echo "<div class=\"wsj-article-row\">";
+        foreach ($article_pair as $article) {
+            echo "<div class=\"wsj-article-col\">";
+            echo html_article_preview($article);
             echo "</div>";
         }
-        echo "</div></div>"; // fin des containers
+        echo "</div>";
     }
+    echo "</div></div>"; // fin des containers
 
     return ob_get_clean();
 }
+
+
+

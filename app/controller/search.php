@@ -4,8 +4,6 @@ require_once __DIR__ . '/../model/article.php';
 
 function main_search()
 {
-
-
     $min_readtime = $_POST['min_readtime'] ?? 1;
     $max_readtime = $_POST['max_readtime'] ?? 30;
     $keyword = htmlspecialchars($_POST['name_search'] ?? '');
@@ -13,17 +11,19 @@ function main_search()
     $menu = get_menucsv();
     $category_aa = get_all_categories();
 
-
-    // Récupère les articles filtrés
-    $filtered_articles = search_articles($keyword, $min_readtime, $max_readtime, $selected_cat);
+    // Si on est en train de rechercher (si le bouton a été cliqué)
+    $search_results = [];
+    if (isset($_POST['button_search'])) {
+        $search_results = search_articles($keyword, $min_readtime, $max_readtime, $selected_cat);
+    }
 
     return join("\n", [
         html_head($menu),
-        html_search($min_readtime, $max_readtime, $keyword, $selected_cat,$category_aa),
-        html_all_articles_main($filtered_articles),
+        html_search($min_readtime, $max_readtime, $keyword, $selected_cat, $category_aa, $search_results),
         html_foot(),
     ]);
 }
+
 
 function search_articles($keyword, $min_readtime, $max_readtime, $category_id = '', $limit = 10)
 {
