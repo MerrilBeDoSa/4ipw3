@@ -34,7 +34,17 @@ function get_last_dates(int $days = 7): array { // les 7 dernières dates
     }
     return $dates;
 }
-
+function resolve_image_path(string $base_name): string
+{
+    $valid_extensions = ['jpg', 'jpeg', 'png'];
+    foreach ($valid_extensions as $ext) {
+        $full_path = MEDIA_ARTICLE_PATH . $base_name . '.' . $ext;
+        if (file_exists($full_path)) {
+            return $full_path;
+        }
+    }
+    return ''; // Aucun fichier trouvé
+}
 
 
 

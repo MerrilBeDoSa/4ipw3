@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../model/common.php';
 
 function html_article_main($article_a)
 {
@@ -14,6 +15,10 @@ function html_article_main($article_a)
     $date = htmlspecialchars($article_a['date_published'] ?? '');
     $image_name = $article_a['image_name'] ?? '';
     $image_path = !empty($image_name) ? MEDIA_ARTICLE_PATH . htmlspecialchars($image_name) : '';
+
+    // Vérification de l'extension de l'image
+    $image_base = pathinfo($article_a['image_name'] ?? '', PATHINFO_FILENAME); // Nom sans extension
+    $image_path = resolve_image_path($image_base);
 
     $out = <<<HTML
     <section class="article">
@@ -37,6 +42,7 @@ function html_article_main($article_a)
 
     return $out;
 }
+
 function html_article_preview($article, $is_featured = false)
 {
     // Vérification et remplacement des valeurs null
@@ -48,47 +54,65 @@ function html_article_preview($article, $is_featured = false)
     $image_name = $article['image_name'] ?? '';
     $image_path = !empty($image_name) ? MEDIA_ARTICLE_PATH . $image_name : '';
 
+    // Vérification de l'extension de l'image
+    $image_base = pathinfo($article['image_name'] ?? '', PATHINFO_FILENAME); // Nom sans extension
+    $image_path = resolve_image_path($image_base);
+
+
     $title_class = $is_featured ? 'wsj-featured-title' : 'wsj-article-title';
     $article_class = $is_featured ? 'wsj-featured-item' : 'wsj-article-item';
 
     ob_start();
     ?>
-    <article class="<?= $article_class ?>">
-        <a href="?page=article&art_id=<?= (int)$art_id ?>">
-            <?php if (!empty($image_path)): ?>
-                <div class="wsj-image-container">
-                    <img src="<?= htmlspecialchars($image_path) ?>"
-                         alt="<?= htmlspecialchars($title) ?>"
-                         class="<?= $is_featured ? 'wsj-featured-image' : 'wsj-article-image' ?>">
-                </div>
-            <?php endif; ?>
-            <h2 class="<?= $title_class ?>"><?= htmlspecialchars($title) ?></h2>
-            <p class="wsj-article-hook"><?= htmlspecialchars($hook) ?></p>
-            <div class="wsj-article-meta">
-                <time class="wsj-article-date"><?= htmlspecialchars($date) ?></time>
-                <?php if ($readtime !== null): ?>
-                    <span class="wsj-readtime">
-                        <i class="bi bi-clock-fill text-primary"></i>
-                        <?= (int)$readtime ?> min
-                    </span>
-                <?php endif; ?>
-
+<article class="<?= $article_class ?>">
+    <a href="?page=article&art_id=<?= (int)$art_id ?>">
+        <?php if (!empty($image_path)): ?>
+            <div class="wsj-image-container">
+                <img src="<?= htmlspecialchars($image_path) ?>"
+                     alt="<?= htmlspecialchars($title) ?>"
+                     class="<?= $is_featured ? 'wsj-featured-image' : 'wsj-article-image' ?>">
             </div>
-        </a>
-        <!-- BOUTON FAVORI -->
-    <?php
-        // Favoris depuis cookie
-        $favorites = isset($_COOKIE['favorites']) ? json_decode($_COOKIE['favorites'], true) : [];
-        if (!is_array($favorites)) $favorites = [];
-        $is_fav = in_array($art_id, $favorites);
+        <?php endif; ?>
+        <h2 class="<?= $title_class ?>"><?= htmlspecialchars($title) ?></h2>
+        <p class="wsj-article-hook"><?= htmlspecialchars($hook) ?></p>
+        <div class="wsj-article-meta d-flex align-items-center gap-2">
+            <time class="wsj-article-date"><?= htmlspecialchars($date) ?></time>
+            <?php if ($readtime !== null): ?>
+                <span class="wsj-readtime">
+            <i class="bi bi-clock-fill text-primary"></i>
+            <?= (int)$readtime ?> min
+        </span>
+            <?php endif; ?>
 
-        $heart_class = $is_fav ? 'fav-icon active' : 'fav-icon';
+            <!-- ///////////// -->
+            <?php
+            $favorites = isset($_COOKIE['favorites']) ? json_decode($_COOKIE['favorites'], true) : [];
+            if (!is_array($favorites)) $favorites = [];
+            $is_fav = in_array($art_id, $favorites);
+            $heart_icon = $is_fav ? '❤️' : '🤍';
+            ?>
+            <a href="?page=favorites&action=<?= $is_fav ? 'remove' : 'add' ?>&id=<?= (int)$art_id ?>"
+               class="wsj-heart-icon" title="<?= $is_fav ? 'Retirer des favoris' : 'Ajouter aux favoris' ?>">
+                <?= $heart_icon ?>
+            </a>
+
+
+        </div>
+    </a>
+    <!-- BOUTON FAVORI -->
+    <?php
+    // Favoris depuis cookie
+    $favorites = isset($_COOKIE['favorites']) ? json_decode($_COOKIE['favorites'], true) : [];
+    if (!is_array($favorites)) $favorites = [];
+    $is_fav = in_array($art_id, $favorites);
+
+    $heart_class = $is_fav ? 'fav-icon active' : 'fav-icon';
     ?>
-
-    </article>
-    <?php
+</article>
+<?php
     return ob_get_clean();
 }
+
 
 
 function html_all_articles_main($article_aa, $is_search = false)
