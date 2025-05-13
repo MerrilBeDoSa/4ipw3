@@ -64,14 +64,27 @@ function html_article_preview($article, $is_featured = false)
             <?php endif; ?>
             <h2 class="<?= $title_class ?>"><?= htmlspecialchars($title) ?></h2>
             <p class="wsj-article-hook"><?= htmlspecialchars($hook) ?></p>
-            <div class="wsj-article-meta">
+            <div class="wsj-article-meta d-flex align-items-center gap-2">
                 <time class="wsj-article-date"><?= htmlspecialchars($date) ?></time>
                 <?php if ($readtime !== null): ?>
                     <span class="wsj-readtime">
-                        <i class="bi bi-clock-fill text-primary"></i>
-                        <?= (int)$readtime ?> min
-                    </span>
+            <i class="bi bi-clock-fill text-primary"></i>
+            <?= (int)$readtime ?> min
+        </span>
                 <?php endif; ?>
+
+                <!-- ///////////// -->
+                <?php
+                $favorites = isset($_COOKIE['favorites']) ? json_decode($_COOKIE['favorites'], true) : [];
+                if (!is_array($favorites)) $favorites = [];
+                $is_fav = in_array($art_id, $favorites);
+                $heart_icon = $is_fav ? '❤️' : '🤍';
+                ?>
+                <a href="?page=favorites&action=<?= $is_fav ? 'remove' : 'add' ?>&id=<?= (int)$art_id ?>"
+                   class="wsj-heart-icon" title="<?= $is_fav ? 'Retirer des favoris' : 'Ajouter aux favoris' ?>">
+                    <?= $heart_icon ?>
+                </a>
+
 
             </div>
         </a>

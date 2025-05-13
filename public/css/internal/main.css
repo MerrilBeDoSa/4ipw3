@@ -548,4 +548,23 @@ favoris avec cookies (ajout/retrait + affichage)
     opacity: 1;
 }
 
+/**
+modif favoris
+ */
+.wsj-heart-icon {
+    font-size: 1.2rem;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+    cursor: default;
+    user-select: none;
+}
+
+.wsj-heart-icon:hover
+{
+    transform: scale(1.2);
+
+}
+
+
+
 
