@@ -552,18 +552,29 @@ favoris avec cookies (ajout/retrait + affichage)
 modif favoris
  */
 .wsj-heart-icon {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     text-decoration: none;
-    transition: transform 0.2s ease;
-    cursor: default;
-    user-select: none;
+    margin-left: 10px;
+    transition: transform 0.2s ease, color 0.2s ease;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    display: inline-block;
 }
 
-.wsj-heart-icon:hover
-{
+.wsj-heart-icon:hover {
+    background-color: rgba(255, 0, 0, 0.1);
     transform: scale(1.2);
-
 }
+
+.wsj-heart-icon.active {
+    color: red;
+}
+
+.wsj-heart-icon:not(.active) {
+    color: #999;
+}
+
 
 
 

@@ -64,6 +64,32 @@ function html_head($menu_array = [])
         <script src="./js/quirks/QuirksMode.js"></script>
         <script src="./js/internal/favorite.js"></script>
     </head>
+
+    <!-- le bitmoji keurr change visuellement apres cliquage sans redirection de la page -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.wsj-heart-icon').forEach(icon => {
+                icon.addEventListener('click', function (e) {
+                    e.preventDefault(); // Empêche la redirection !!
+                    const url = this.href;
+
+                    fetch(url)
+                        .then(() => {
+                            // Change le cœur après ajout/retrait
+                            const isFav = this.classList.contains('active');
+                            this.textContent = isFav ? '🤍' : '❤️';
+                            this.classList.toggle('active');
+                        })
+                        .catch(err => {
+                            console.error("Erreur lors de la mise à jour des favoris :", err);
+                        });
+                });
+            });
+        });
+    </script>
+
+
+
     <body>
     <header>
         <div class="menu-container">
