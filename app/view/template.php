@@ -95,21 +95,30 @@ function html_head($menu_array = [])
 $theme_class = '';
 $font_class = '';
 
+// Si un nouveau thème est sélectionné, mettre à jour le cookie ET forcer $_COOKIE à jour
 if (!empty($_GET['theme'])) {
-    setcookie('theme', $_GET['theme'], time() + 3600, '/');
-}
-if (!empty($_GET['font'])) {
-    setcookie('font', $_GET['font'], time() + 3600, '/');
+    $theme = $_GET['theme'];
+    setcookie('theme', $theme, time() + 3600, '/');
+    $_COOKIE['theme'] = $theme; // ← forcer la mise à jour directe
 }
 
+// Si une nouvelle police est sélectionnée, même chose
+if (!empty($_GET['font'])) {
+    $font = $_GET['font'];
+    setcookie('font', $font, time() + 3600, '/');
+    $_COOKIE['font'] = $font; // ← forcer aussi
+}
+
+// Appliquer les classes CSS
 if (!empty($_COOKIE['theme'])) {
     $theme_class = 'theme-' . htmlspecialchars($_COOKIE['theme']);
 }
+
 if (!empty($_COOKIE['font'])) {
     $font_class = 'font-' . htmlspecialchars($_COOKIE['font']);
 }
-
 ?>
+
 
     <body class="<?= $theme_class ?> <?= $font_class ?>">
 
