@@ -852,6 +852,38 @@ body.theme-grey {
 
 
 
+/* =================== POLICES =================== */
+body.font-black {
+    color: #000000 !important;
+}
+
+body.font-blue {
+    color: #007bff !important;
+}
+
+body.font-red {
+    color: #dc3545 !important;
+}
+
+/* Si body est en dark ET en font-red, il faut que les textes restent bien visibles */
+.theme-dark.font-red,
+.theme-dark .font-red {
+    color: #ff6666 !important; /* rouge plus clair si besoin */
+}
+
+.theme-dark.font-blue,
+.theme-dark .font-blue {
+    color: #66bfff !important; /* bleu plus lisible sur fond sombre */
+}
+
+.theme-dark.font-black,
+.theme-dark .font-black {
+    color: #f0f0f0 !important; /* noir sur fond noir n'est pas visible */
+}
+
+
+
+
 
 
 
