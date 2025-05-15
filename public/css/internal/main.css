@@ -611,7 +611,7 @@ body.theme-grey {
     color: #000000;
 }
 
-/* Appliquer aussi au header, menu, etc.
+/* Appliquer aussi au header, menu, etc.*/
 .theme-dark header,
 .theme-dark nav,
 .theme-dark .menu-container,
@@ -643,7 +643,7 @@ body.theme-grey {
     color: #cccccc;
 }
 
-*/
+
 
 /* DARK THEME APPLIQUÉ À TOUS LES BLOCS VISIBLES */
 .theme-dark,
