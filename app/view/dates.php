@@ -5,7 +5,7 @@ function html_date_sidebar(array $dates): string
     ob_start();
     ?>
     <aside class="date-sidebar p-3">
-        <h3>Articles récents :</h3>
+        <h3 class="recent-title">Articles récents :</h3>
         <ul class="list-group">
             <?php foreach ($dates as $date): ?>
                 <li class="list-group-item">

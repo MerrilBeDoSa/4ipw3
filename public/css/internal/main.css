@@ -675,7 +675,37 @@ body.theme-grey {
     border: 1px solid #444;
 }
 
+/* Pour rendre les <td>, <h3> et <label> lisibles selon le thème */
 
+.theme-dark td,
+.theme-dark h3,
+.theme-dark label {
+    color: #f0f0f0 !important;
+}
+
+.theme-grey td,
+.theme-grey h3,
+.theme-grey label {
+    color: #111 !important;
+}
+
+.theme-light td,
+.theme-light h3,
+.theme-light label {
+    color: #000 !important;
+}
+
+
+
+.theme-dark .recent-title {
+    color: #000000 !important;
+}
+.theme-grey .recent-title {
+    color: #111111 !important;
+}
+.theme-light .recent-title {
+    color: #000000 !important;
+}
 
 
 
