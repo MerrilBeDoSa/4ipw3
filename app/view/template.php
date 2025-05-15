@@ -88,13 +88,56 @@ function html_head($menu_array = [])
         });
     </script>
 
+    <!-- option de présention-->
+<?php
 
+// Appliquer les préférences depuis les cookies
+$theme_class = '';
+$font_class = '';
 
-    <body>
+if (!empty($_GET['theme'])) {
+    setcookie('theme', $_GET['theme'], time() + 3600, '/');
+}
+if (!empty($_GET['font'])) {
+    setcookie('font', $_GET['font'], time() + 3600, '/');
+}
+
+if (!empty($_COOKIE['theme'])) {
+    $theme_class = 'theme-' . htmlspecialchars($_COOKIE['theme']);
+}
+if (!empty($_COOKIE['font'])) {
+    $font_class = 'font-' . htmlspecialchars($_COOKIE['font']);
+}
+
+?>
+
+    <body class="<?= $theme_class ?> <?= $font_class ?>">
+
     <header>
         <div class="menu-container">
             <!-- Titre principal -->
             <h1 id="HomeTitle">THE WALL STREET JOURNAL.</h1>
+
+            <!-- 🎨 Options de présentation theme -->
+            <form method="get" style="display:flex; gap:1rem; align-items:center; margin-top: 1rem;">
+                <label>🎨 Thème :
+                    <select name="theme" onchange="this.form.submit()">
+                        <option value="light" <?= ($_COOKIE['theme'] ?? '') === 'light' ? 'selected' : '' ?>>Light</option>
+                        <option value="dark" <?= ($_COOKIE['theme'] ?? '') === 'dark' ? 'selected' : '' ?>>Dark</option>
+                        <option value="grey" <?= ($_COOKIE['theme'] ?? '') === 'grey' ? 'selected' : '' ?>>Grey</option>
+                    </select>
+                </label>
+
+                <!-- 🔤 Options de présentation font -->
+
+                <label>🔤 Police :
+                    <select name="font" onchange="this.form.submit()">
+                        <option value="black" <?= ($_COOKIE['font'] ?? '') === 'black' ? 'selected' : '' ?>>Black</option>
+                        <option value="blue" <?= ($_COOKIE['font'] ?? '') === 'blue' ? 'selected' : '' ?>>Blue</option>
+                        <option value="red" <?= ($_COOKIE['font'] ?? '') === 'red' ? 'selected' : '' ?>>Red</option>
+                    </select>
+                </label>
+            </form>
 
 
             <!-- Menu principal -->
