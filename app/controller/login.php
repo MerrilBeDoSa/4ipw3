@@ -4,7 +4,8 @@
 
 // Inclure le modèle
 require_once realpath(__DIR__ . '/../model/login.php');
-
+require_once __DIR__ . '/../view/template.php';
+require_once __DIR__ . '/../view/login.php';
 
 
 
@@ -28,6 +29,7 @@ function main_login()
     // Initialise les variables
     $action = @$_GET['action'] ?: "";
     $msg = '';
+    $menu = get_menucsv();
 
     // Gestion de la déconnexion via GET
     if ($action === 'logout') {
@@ -60,12 +62,12 @@ function main_login()
         }
     }
 
+
+    echo html_head($menu);
     // Affiche le contenu HTML
     echo <<<HTML
     <h1>Connexion</h1>
 HTML;
-
-    echo html_link_home();
 
     if (isset($_SESSION['login']['is_logged']) && $_SESSION['login']['is_logged']) {
         echo html_user_status(true, $_SESSION['login']['name']);
@@ -73,10 +75,13 @@ HTML;
     } else {
         echo html_user_status(false);
         echo form_login();
-    }
 
+    }
+    echo html_foot();
     echo html_message($msg);
+
 }
+
 
 // Fonction pour afficher le statut de l'utilisateur (connecté ou anonyme)
 

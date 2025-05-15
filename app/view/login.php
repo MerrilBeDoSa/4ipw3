@@ -23,9 +23,14 @@ HTML;
  *
  * @return string
  */
+
+
 function form_login()
 {
     return <<<HTML
+<head>
+ <link rel="stylesheet" href="./css/internal/main.css" /> <!-- lib interne / perso -->
+</head>
     <div class="login-wrapper">
         <div class="login-box">
             
@@ -48,6 +53,10 @@ function form_login()
     </div>
 HTML;
 }
+
+
+
+
 
 
 /**
