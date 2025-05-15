@@ -90,10 +90,28 @@ function html_head($menu_array = [])
 
 <!-- option de présention-->
 <?php
-$theme = $_COOKIE['theme'] ?? 'light';
-$font = $_COOKIE['font'] ?? 'black';
+
+// Appliquer les préférences depuis les cookies
+$theme_class = '';
+$font_class = '';
+
+if (!empty($_GET['theme'])) {
+    setcookie('theme', $_GET['theme'], time() + 3600, '/');
+}
+if (!empty($_GET['font'])) {
+    setcookie('font', $_GET['font'], time() + 3600, '/');
+}
+
+if (!empty($_COOKIE['theme'])) {
+    $theme_class = 'theme-' . htmlspecialchars($_COOKIE['theme']);
+}
+if (!empty($_COOKIE['font'])) {
+    $font_class = 'font-' . htmlspecialchars($_COOKIE['font']);
+}
+
 ?>
-    <body class="<?= "$theme-$theme font-$font" ?>">
+    <body class="<?= $theme_class ?> <?= $font_class ?>">
+
     <header>
         <div class="menu-container">
             <!-- Titre principal -->
@@ -111,9 +129,9 @@ $font = $_COOKIE['font'] ?? 'black';
 
                 <label>🔤 Police :
                     <select name="font" onchange="this.form.submit()">
-                        <option value="black" <?= ($_COOKIE['font'] ?? '') === 'black' ? 'selected' : '' ?>>Noir</option>
-                        <option value="blue" <?= ($_COOKIE['font'] ?? '') === 'blue' ? 'selected' : '' ?>>Bleu</option>
-                        <option value="red" <?= ($_COOKIE['font'] ?? '') === 'red' ? 'selected' : '' ?>>Rouge</option>
+                        <option value="black" <?= ($_COOKIE['font'] ?? '') === 'black' ? 'selected' : '' ?>>Black</option>
+                        <option value="blue" <?= ($_COOKIE['font'] ?? '') === 'blue' ? 'selected' : '' ?>>Blue</option>
+                        <option value="red" <?= ($_COOKIE['font'] ?? '') === 'red' ? 'selected' : '' ?>>Red</option>
                     </select>
                 </label>
             </form>
