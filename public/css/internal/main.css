@@ -482,7 +482,7 @@ modif favoris
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 60vh;
+    min-height: 50vh;
     padding: 1rem;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 
