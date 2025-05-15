@@ -88,13 +88,35 @@ function html_head($menu_array = [])
         });
     </script>
 
-
-
-    <body>
+<!-- option de présention-->
+<?php
+$theme = $_COOKIE['theme'] ?? 'light';
+$font = $_COOKIE['font'] ?? 'black';
+?>
+    <body class="<?= "$theme-$theme font-$font" ?>">
     <header>
         <div class="menu-container">
             <!-- Titre principal -->
             <h1 id="HomeTitle">THE WALL STREET JOURNAL.</h1>
+
+            <!-- 🎨 Options de présentation -->
+            <form method="get" style="display:flex; gap:1rem; align-items:center; margin-top: 1rem;">
+                <label>🎨 Thème :
+                    <select name="theme" onchange="this.form.submit()">
+                        <option value="light" <?= ($_COOKIE['theme'] ?? '') === 'light' ? 'selected' : '' ?>>Light</option>
+                        <option value="dark" <?= ($_COOKIE['theme'] ?? '') === 'dark' ? 'selected' : '' ?>>Dark</option>
+                        <option value="grey" <?= ($_COOKIE['theme'] ?? '') === 'grey' ? 'selected' : '' ?>>Grey</option>
+                    </select>
+                </label>
+
+                <label>🔤 Police :
+                    <select name="font" onchange="this.form.submit()">
+                        <option value="black" <?= ($_COOKIE['font'] ?? '') === 'black' ? 'selected' : '' ?>>Noir</option>
+                        <option value="blue" <?= ($_COOKIE['font'] ?? '') === 'blue' ? 'selected' : '' ?>>Bleu</option>
+                        <option value="red" <?= ($_COOKIE['font'] ?? '') === 'red' ? 'selected' : '' ?>>Rouge</option>
+                    </select>
+                </label>
+            </form>
 
 
             <!-- Menu principal -->

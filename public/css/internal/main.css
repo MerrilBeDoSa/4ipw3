@@ -582,4 +582,98 @@ modif favoris
 
 
 
+/**
+option de présentation
+ */
+body.theme-light {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+body.theme-dark {
+    background-color: #1e1e1e;
+    color: #ffffff;
+}
+
+body.theme-grey {
+    background-color: #f0f0f0;
+    color: #222222;
+}
+
+/* Corrige la couleur du texte dans les éléments spécifiques */
+.wsj-article-title,
+.wsj-featured-title,
+.wsj-article-hook,
+.wsj-article-meta,
+.article-content,
+.article-date,
+h1, h2, h3, h4, h5, h6,
+a {
+    color: inherit !important;
+}
+
+.wsj-heart-icon {
+    color: inherit;
+}
+
+
+body.font-black {
+    color: black;
+}
+
+body.font-blue {
+    color: blue;
+}
+
+body.font-red {
+    color: red;
+}
+
+/* ==== THÈMES GÉNÉRAUX ==== */
+body.theme-light {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+body.theme-dark {
+    background-color: #121212;
+    color: #f0f0f0;
+}
+
+body.theme-grey {
+    background-color: #e0e0e0;
+    color: #111111;
+}
+
+/* Pour renforcer contraste dans header, nav, etc. */
+.theme-dark header,
+.theme-dark nav,
+.theme-dark footer {
+    background-color: #1e1e1e;
+    color: #f0f0f0;
+}
+
+.theme-grey header,
+.theme-grey nav,
+.theme-grey footer {
+    background-color: #d0d0d0;
+    color: #111;
+}
+
+.theme-light header,
+.theme-light nav,
+.theme-light footer {
+    background-color: #f9f9f9;
+    color: #000;
+}
+
+
+
+
+
+
+
+
+
+
 
