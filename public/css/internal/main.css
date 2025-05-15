@@ -629,7 +629,7 @@ body.font-red {
     color: red;
 }
 
-/* ==== THÈMES GÉNÉRAUX ====
+/* ==== THÈMES GÉNÉRAUX ==== */
 body.theme-light {
     background-color: #ffffff;
     color: #000000;
@@ -644,7 +644,7 @@ body.theme-grey {
     background-color: #e0e0e0;
     color: #111111;
 }
-*/
+
 
 
 /* Pour renforcer contraste dans header, nav, etc.*/

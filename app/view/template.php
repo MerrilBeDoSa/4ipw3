@@ -117,7 +117,7 @@ if (!empty($_COOKIE['font'])) {
             <!-- Titre principal -->
             <h1 id="HomeTitle">THE WALL STREET JOURNAL.</h1>
 
-            <!-- 🎨 Options de présentation -->
+            <!-- 🎨 Options de présentation theme -->
             <form method="get" style="display:flex; gap:1rem; align-items:center; margin-top: 1rem;">
                 <label>🎨 Thème :
                     <select name="theme" onchange="this.form.submit()">
@@ -126,6 +126,8 @@ if (!empty($_COOKIE['font'])) {
                         <option value="grey" <?= ($_COOKIE['theme'] ?? '') === 'grey' ? 'selected' : '' ?>>Grey</option>
                     </select>
                 </label>
+
+                <!-- 🔤 Options de présentation font -->
 
                 <label>🔤 Police :
                     <select name="font" onchange="this.form.submit()">
