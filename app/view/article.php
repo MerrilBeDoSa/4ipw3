@@ -3,12 +3,10 @@ require_once __DIR__ . '/../model/common.php';
 
 function html_article_main($article_a)
 {
-    // Vérifie si l'article existe
     if ($article_a === null) {
         return '<section class="article"><article><h1>Article non trouvé</h1></article></section>';
     }
 
-    // Échappement des variables pour la sécurité
     $title = htmlspecialchars($article_a['title'] ?? '');
     $hook = htmlspecialchars($article_a['hook'] ?? '');
     $content = $article_a['content'] ?? '';
@@ -16,7 +14,6 @@ function html_article_main($article_a)
     $date_iso = date('Y-m-d', strtotime($date_raw));
     $date = date('d F Y', strtotime($date_raw));
 
-    // Résolution du chemin de l'image (png, jpg, ...)
     $image_base = pathinfo($article_a['image_name'] ?? '', PATHINFO_FILENAME);
     $image_path = resolve_image_path($image_base);
 
@@ -47,6 +44,7 @@ function html_article_main($article_a)
     <?php
     return ob_get_clean();
 }
+
 
 function html_article_preview($article, $is_featured = false)
 {
