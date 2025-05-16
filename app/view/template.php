@@ -129,6 +129,8 @@ if (!empty($_COOKIE['font'])) {
 
             <!-- 🎨 Options de présentation theme -->
             <form method="get" style="display:flex; gap:1rem; align-items:center; margin-top: 1rem;">
+                <input type="hidden" name="page" value="<?= htmlspecialchars($_GET['page'] ?? 'home') ?>">
+
                 <label>🎨 Thème :
                     <select name="theme" onchange="this.form.submit()">
                         <option value="light" <?= ($_COOKIE['theme'] ?? '') === 'light' ? 'selected' : '' ?>>Light</option>
