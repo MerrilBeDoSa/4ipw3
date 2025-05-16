@@ -12,8 +12,11 @@ function main_favorites(): string
     $action = $_GET['action'] ?? null;
     $article_id = $_GET['id'] ?? null;
 
-    if ($action && ctype_digit($article_id)) {
-        $article_id = (int)$article_id;
+
+
+    if ($action === 'add' || $action === 'remove') {
+        if ($article_id !== null && ctype_digit($article_id)) {
+            $article_id = (int)$article_id;}
 
         // Charger les favoris existants
         $favorites = isset($_COOKIE['favorites']) ? json_decode($_COOKIE['favorites'], true) : [];
@@ -34,6 +37,16 @@ function main_favorites(): string
         setcookie('favorites', json_encode($favorites), time() + 30 * 24 * 60 * 60, '/');
 
         // Redirection pour éviter le double traitement
+        if ($action === 'clear') {
+            setcookie('favorites', json_encode([]), time() + 30 * 24 * 60 * 60, '/');
+            header("Location: ?page=favorites");
+            exit;
+        }
+    }
+
+    // si l'action est "clear", on vide tous les favoris
+    if ($action === 'clear') {
+        setcookie('favorites', json_encode([]), time() + 30 * 24 * 60 * 60, '/');
         header("Location: ?page=favorites");
         exit;
     }

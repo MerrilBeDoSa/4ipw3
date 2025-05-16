@@ -1135,6 +1135,49 @@ liste de dates
     }
 }
 
+/* les favoris */
+.fw-bold {
+    font-weight: bold;
+}
+.fs-4 {
+    font-size: 1.5rem;
+}
+.btn-outline-danger {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+
+
+/**
+
+ */
+
+.clear-favorites {
+    background-color: #007bff; /* bleu clair lisible */
+    color: white;              /* texte toujours blanc pour le contraste */
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.clear-favorites:hover {
+    background-color: #0056b3; /* bleu plus foncé au hover */
+    transform: scale(1.03);
+}
+
+.clear-favorites:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(205, 213, 225, 0.5);
+}
+
 
 
 
