@@ -99,6 +99,7 @@ h1 img
 header, footer
 {
     text-align: center; /* alignement du texte au milieu(centre)*/
+    background-color:lightcyan ;
 }
 
 footer img
@@ -572,9 +573,6 @@ body.theme-grey {
 .wsj-article-meta,
 .article-content,
 .article-date,
-.article-main,
-.article-main .article-title,.article-main .article-header, .article-main .article-meta, .article-main .article-hook,
-
 h1, h2, h3, h4, h5, h6,
 a {
     color: inherit !important;
@@ -1011,79 +1009,6 @@ liste de dates
 }
 
 
-/* ======= Responsive article layout ======= */
-.article-main {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 1rem;
-    line-height: 1.7;
-    color: #333;
-    font-family: "Helvetica Neue", sans-serif;
-}
-
-/* Title */
-.article-title {
-    font-size: 2.2rem;
-    text-align: center;
-    margin-bottom: 0.5rem;
-}
-
-/* Hook (sous-titre) */
-.article-hook {
-    font-size: 1.3rem;
-    font-weight: 300;
-    color: #555;
-    text-align: center;
-    margin-bottom: 1rem;
-}
-
-/* Date */
-.article-date {
-    display: block;
-    text-align: center;
-    font-size: 0.9rem;
-    color: #999;
-    margin-bottom: 1.5rem;
-}
-
-/* Image centrée et responsive */
-.media_article {
-    text-align: center;
-    margin-bottom: 1.5rem;
-}
-
-.media_article img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-/* Séparateur */
-.article-separator {
-    border: none;
-    border-top: 1px solid #ccc;
-    margin: 2rem 0;
-}
-
-/* Contenu */
-.article-content {
-    font-size: 1rem;
-    color: #444;
-}
-
-/* Responsive typography */
-@media (max-width: 600px) {
-    .article-title {
-        font-size: 1.6rem;
-    }
-    .article-hook {
-        font-size: 1.1rem;
-    }
-    .article-content {
-        font-size: 0.95rem;
-    }
-}
 
 .full-footer {
     background-color: #f5f5f5;
@@ -1117,6 +1042,98 @@ liste de dates
     font-size: 0.8rem;
     color: #555;
 }
+
+/** Logo WSJ au-dessus du footer */
+
+ .wsj-footer-logo-bar {
+    background-color: #f1f1f1;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+.wsj-footer-logo-bar .wsj-logo {
+    height: 40px;
+    margin-bottom: 4px;
+}
+
+.wsj-footer-logo-bar .wsj-subtitle {
+    font-size: 0.9rem;
+    color: #555;
+    font-family: Georgia, serif;
+}
+/* Centrage et responsivité générale */
+.article-main {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem;
+    font-family: "Segoe UI", sans-serif;
+    line-height: 1.7;
+    color: #333;
+}
+
+/* Titre principal */
+.article-title {
+    font-size: 2.2rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+/* Hook */
+.article-hook {
+    font-size: 1.3rem;
+    font-weight: 300;
+    color: #555;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+/* Métadonnées */
+.article-date {
+    display: block;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 1.5rem;
+}
+
+/* Image centrée et responsive */
+.media_article {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+.media_article img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+/* Séparateur */
+.article-separator {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 2rem 0;
+}
+
+/* Contenu */
+.article-content {
+    font-size: 1rem;
+    color: #444;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .article-title {
+        font-size: 1.6rem;
+    }
+    .article-hook {
+        font-size: 1.1rem;
+    }
+    .article-content {
+        font-size: 0.95rem;
+    }
+}
+
 
 
 
