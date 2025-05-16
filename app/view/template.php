@@ -203,8 +203,8 @@ function html_foot()
 {
     ob_start();
     ?>
-    <hr />
     <footer>
+        <?= html_footer_full() ?> <!-- Ceci appelle le footer complet -->
         Made with the amazing AWebWiz framework
         <img src="./media/awebwiz.png" alt="AWebWiz logo">
     </footer>
@@ -213,6 +213,7 @@ function html_foot()
     <?php
     return ob_get_clean();
 }
+
 
 /**
  * Valide et filtre les entrées du tableau `$menu_array`.
@@ -226,6 +227,16 @@ function validate_menu_array($menu_array)
         return isset($menu[0], $menu[1]) && is_string($menu[0]) && is_string($menu[1]);
     });
 }
+
+
+
+
+
+
+
+
+
+
 //function date_list(array $dates): string
 //{
 //    ob_start();
