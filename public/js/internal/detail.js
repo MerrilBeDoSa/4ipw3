@@ -57,16 +57,6 @@ $(function() {
     // Initialisation des événements
     function initHoverEvents() {
         if (!isUserLoggedIn()) {
-            // Feedback visuel pour les non-connectés
-            $('.wsj-article-item, .wsj-featured-item').hover(
-                function() {
-                    $(this).append(
-                    );
-                },
-                function() {
-                    $(this).find('.login-prompt-overlay').remove();
-                }
-            );
             return;
         }
 

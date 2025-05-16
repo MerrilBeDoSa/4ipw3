@@ -175,7 +175,6 @@ function html_article_detail(array $article, string $role): string {
         <?php if ($role === 'admin'): ?>
             <hr class="detail-separator">
             <p><strong>ID :</strong> <?= $article['id'] ?? '' ?></p>
-            <p><strong>Auteur :</strong> <?= htmlspecialchars($article['author'] ?? '') ?></p>
             <p><strong>ID Image :</strong> <?= $article['image_id'] ?? '' ?></p>
             <p><strong>Mots :</strong> <?= $word_count ?></p>
         <?php endif; ?>

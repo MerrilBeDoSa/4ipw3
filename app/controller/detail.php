@@ -1,39 +1,41 @@
 <?php
-require_once '../app/model/article.php';
-require_once '../app/view/article.php';
+require_once __DIR__ . '/../model/article.php';
+require_once __DIR__ . '/../view/article.php';
 
 function main_article_detail() {
-    // Vérification stricte de la connexion
-    if (session_status() !== PHP_SESSION_ACTIVE) {
-        session_start();
-    }
-
-    if (!isset($_SESSION['login']['is_logged'])) {
-        return ''; // Retourne vide si non connecté
-    }
     // Vérifier si c'est une requête AJAX
     if (empty($_GET['ajax'])) {
         header("Location: index.php");
         exit;
     }
 
+    // Démarrer la session si elle n'est pas active
+    if (session_status() !== PHP_SESSION_ACTIVE) {
+        session_start();
+    }
+
+    // Vérifier strictement la connexion
+    if (!isset($_SESSION['login']['is_logged']) || !$_SESSION['login']['is_logged']) {
+        header('HTTP/1.0 403 Forbidden');
+        exit;
+    }
+
     $art_id = (int)($_GET['art_id'] ?? 0);
-    $article =  get_article_a($art_id); // Utilisez votre fonction qui récupère tous les détails
+    $article = get_article_a($art_id);
 
     if (!$article) {
         return '';
     }
 
-    // Calcul du nombre de mots & temps de lecture
+    // Calcul des métriques
     $article['word_count'] = str_word_count(strip_tags($article['content'] ?? ''));
     $article['reading_time'] = ceil($article['word_count'] / 200);
 
-    // Récupérer le rôle de l'utilisateur  // Vérifier l'état de la session sans la redémarrer
-       if (session_status() !== PHP_SESSION_ACTIVE) {
-           session_start();
-       }
+    // Valeur par défaut pour la catégorie
+    $article['category'] = $article['category'] ?? 'Général';
+
+    // Récupération du rôle
     $role = $_SESSION['login']['role'] ?? 'user';
 
-    // Génération du fragment HTML pour l'overlay
     return html_article_detail($article, $role);
 }
