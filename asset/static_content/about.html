@@ -17,8 +17,9 @@
 <h1>Projet MVC</h1>
 
 <p>
-    Les fonctionnalités spécifiques demandées pour le groupe :
+    Les fonctionnalités spécifiques demandées pour le groupe M :
 </p>
+<h3>Back-end</h3>
 <ul>
     <li>Source des pages statiques : hardcodé (assoc array)</li>
     <li>Sauvegarde de l’identification via session (login)</li>
@@ -29,6 +30,17 @@
     <li>Sauvegarde du panier d’articles favoris via cookie</li>
     <li>Options de présentation : choix de thème (light or dark or grey)</li>
     <li>Options de présentation : choix du font (3 font colors)</li>
+    <hr>
+
+</ul>
+<h3>Front-end</h3>
+<ul>
+    <li>Détail d'un article de la page d'acceuil : on click - affichage devant l'article</li>
+    <li>Gestion des favoris : en variable session</li>
+    <li>Recherche d'articles par : : "mot-clé / date min max (slider or other) + readtime min max (slider)"</li>
+    <li>Option de présentation : thème : : light or dark or grey</li>
+    <li>Option de présentation : font : : 3 fonts policies</li>
+    <li>Bonus : menu : chargement dynamique</li>
 </ul>
 
 <hr>
@@ -77,14 +89,29 @@
         <li><strong>Affichage :</strong> Génère une page HTML avec l’en-tête, la liste des dates via <code>html_date_sidebar()</code> et le pied de page.</li>
     </ul>
 
-    <h3>3. controller/home.php</h3>
+    <h3>3. controller/favorites.php</h3>
+    <ul>
+        <li><strong>Ajout :</strong>Fonction<code>main_favorites()</code> qui gère l'ajout, la suppression et l'affichage des articles favoris.</li>
+        <li><strong>Dépendances :</strong> Utilise <code>get_article_a()</code> et <code>get_menucsv()</code> du modèle, ainsi que <code>html_favorite_articles()</code>, <code>html_head()</code> et <code>html_foot()</code> des vues.</li>
+        <li><strong>Paramètres GET :</strong>
+            <ul>
+                <li><code>action</code> : soit <code>add</code> (ajouter aux favoris), soit <code>remove</code> (retirer des favoris)</li>
+                <li><code>id</code> : identifiant numérique de l’article concerné</li>
+            </ul>
+        </li>
+        <li><strong>Traitement :</strong> Lit les favoris dans le cookie <code>favorites</code> (JSON), met à jour le tableau selon l’action, puis le réécrit dans un nouveau cookie.</li>
+        <li><strong>Redirection :</strong> Une fois le traitement terminé, redirige vers la page <code>?page=favorites</code> pour éviter la répétition de l’action.</li>
+        <li><strong>Affichage :</strong> Affiche les articles favoris dans une grille via <code>html_favorite_articles()</code>.</li>
+    </ul>
+
+    <h3>4. controller/home.php</h3>
     <ul>
         <li><strong>Ajout :</strong> Fonction <code>main_home()</code> pour afficher la page d’accueil du site.</li>
         <li><strong>Données :</strong> Récupère les 10 derniers articles de la catégorie <code>id = 146</code> ("On n’est pas des pigeons") grâce à <code>get_latest_articles_by_category()</code>.</li>
         <li><strong>Affichage :</strong> Utilise <code>html_all_articles_main()</code> pour afficher les articles, avec un en-tête (menu) et un pied de page.</li>
     </ul>
 
-    <h3>4. controller/login.php</h3>
+    <h3>5. controller/login.php</h3>
     <ul>
         <li><strong>Ajout :</strong> Fonction <code>main_login()</code> qui gère la connexion et déconnexion des utilisateurs.</li>
         <li><strong>Connexion :</strong> Récupération des identifiants via POST. Vérification avec la fonction <code>login_validate()</code> (modèle).</li>
@@ -93,7 +120,7 @@
         <li><strong>Affichage :</strong> Statut de l’utilisateur, message flash, formulaire ou bouton de déconnexion selon l’état connecté ou non.</li>
     </ul>
 
-    <h3>5. controller/presse.php</h3>
+    <h3>6. controller/presse.php</h3>
     <ul>
         <li><strong>Ajout :</strong> Fonction <code>main_press()</code> qui permet d’afficher les articles filtrés par date (via <code>?date=YYYY-MM-DD</code>).</li>
         <li><strong>Paramètre GET :</strong> Si une date est présente dans l’URL, les articles correspondants sont récupérés avec <code>get_articles_by_date()</code>.</li>
@@ -101,7 +128,7 @@
         <li><strong>Affichage :</strong> Utilisation de <code>html_all_articles_main()</code> pour afficher les articles dans la vue.</li>
     </ul>
 
-    <h3>6. controller/search.php</h3>
+    <h3>7. controller/search.php</h3>
     <ul>
         <li><strong>Fonction :</strong> <code>main_search()</code></li>
         <li><strong>Rôle :</strong> Affiche tous les articles accompagnés du formulaire de recherche :
@@ -114,7 +141,14 @@
         <li><strong>Lien :</strong> Accessible via <code>?page=search</code>.</li>
     </ul>
 
-    //////////////////////////////////////////////
+    <h3>8. controller/static.php</h3>
+    <ul>
+        <li><strong>Ajout :</strong> Fonction <code>main_static()</code> qui affiche une page statique HTML (à propos, mentions légales, etc.).</li>
+        <li><strong>Dépendances :</strong> Utilise <code>get_menucsv()</code> pour générer le menu, et <code>file_get_contents()</code> pour charger le fichier HTML depuis <code>asset/static_content/about.html</code>.</li>
+        <li><strong>Affichage :</strong> Assemble l’en-tête avec <code>html_head()</code>, le contenu statique et le pied de page via <code>html_foot()</code>.</li>
+    </ul>
+
+   <!-- //////////////////////////////////////////////
 
     <h3>7. panier.php</h3>
     <ul>
@@ -161,7 +195,7 @@
 </div>
 
 //////////////////////////////////////////////
-
+-->
 <hr>
 
 <!-- III. MODELS -->
@@ -214,7 +248,7 @@
         <li><strong>Rôle :</strong> Centraliser l’accès au menu CSV dans les autres vues ou contrôleurs.</li>
     </ul>
 
-    //////////////////////////////////////////////
+    <!--//////////////////////////////////////////////
 
     <h3>5. sponsor.php</h3>
     <ul>
@@ -228,7 +262,7 @@
         <li><strong>Rôle :</strong> Lit les fichiers HTML (about.html, cgv.html) dans le dossier <code>/asset/static_content</code> pour afficher des pages statiques.</li>
     </ul>
 </div>
-//////////////////////////////////////////////
+////////////////////////////////////////////// -->
 <hr>
 
 <!-- IV. VIEWS -->
@@ -253,13 +287,26 @@
         <li><strong>Rôle :</strong> Affiche une liste verticale des dates distinctes d’articles dans une <code>&lt;aside&gt;</code>, chaque date étant un lien vers la page "Presse" avec un filtre par date (<code>?page=press&date=YYYY-MM-DD</code>).</li>
     </ul>
 
-    <h3>3. view/home.php</h3>
+    <h3>view/favorites.php</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>html_favorite_articles(array $articles)</code></li>
+        <li><strong>But :</strong> Affiche une table des articles ajoutés en favoris par l'utilisateur.</li>
+        <li><strong>Structure :</strong>
+            <ul>
+                <li>Affiche un message s’il n’y a aucun favori.</li>
+                <li>Sinon, génère une table HTML avec : image, titre, résumé, date et bouton "Retirer".</li>
+            </ul>
+        </li>
+        <li><strong>Comportement :</strong> Le bouton "Retirer" supprime l’article des favoris via un lien avec <code>action=remove</code> et l’<code>id</code> de l’article.</li>
+    </ul>
+
+    <h3>4. view/home.php</h3>
     <ul>
         <li><strong>Fonction :</strong> <code>html_body()</code></li>
         <li><strong>Rôle :</strong> Génère une section HTML simple avec un titre et un paragraphe de bienvenue (“HOME — Ceci est notre site”).</li>
     </ul>
 
-    <h3>4. view/login.php</h3>
+    <h3>5. view/login.php</h3>
     <ul>
         <li><strong>Fonctions :</strong>
             <ul>
@@ -273,7 +320,7 @@
         <li><strong>Rôle :</strong> Gère l'affichage des éléments liés à la connexion utilisateur (formulaire, statut, messages).</li>
     </ul>
 
-    <h3>5. view/template.php</h3>
+    <h3>6. view/template.php</h3>
     <ul>
         <li><strong>Fonctions :</strong>
             <ul>
@@ -284,12 +331,28 @@
         </li>
         <li><strong>Rôle :</strong> Centralise l'affichage de l’en-tête, du menu de navigation, et du footer, en intégrant le statut de session utilisateur (connecté ou non).</li>
     </ul>
-    //////////////////////////////////////////////////
-    <h3>6. search.php</h3>
+
+    <h3>view/search.php</h3>
     <ul>
-        <li><strong>Fonction :</strong> <code>html_search_form()</code></li>
-        <li><strong>Rôle :</strong> Affiche le formulaire de recherche permettant de filtrer les articles par mot-clé et par dates.</li>
+        <li><strong>Fonction :</strong> <code>html_search()</code></li>
+        <li><strong>But :</strong> Affiche un formulaire de recherche avancée (mot-clé, catégorie, temps de lecture) et les résultats filtrés.</li>
+        <li><strong>Formulaire :</strong>
+            <ul>
+                <li>Champ texte pour le mot-clé.</li>
+                <li>Menu déroulant pour choisir une catégorie (dynamique depuis <code>$category_aa</code>).</li>
+                <li>Sliders pour sélectionner un temps de lecture min et max (1 à 30 minutes).</li>
+            </ul>
+        </li>
+        <li><strong>Résultats :</strong>
+            <ul>
+                <li>Affiche un message si aucun article n'est trouvé.</li>
+                <li>Sinon, affiche un article principal en vedette puis les autres par paires (2 par ligne).</li>
+                <li>Utilise <code>html_article_preview()</code> pour afficher chaque article.</li>
+            </ul>
+        </li>
     </ul>
+
+    <!--
 
     <h3>7. sponsor.php</h3>
     <ul>
@@ -308,11 +371,12 @@
     </ul>
 </div>
 //////////////////////////////////////////////////
+-->
 <hr>
 
-<!-- V. FONCTIONNALITÉS SPÉCIFIQUES DU GROUPE -->
+<!-- V. FONCTIONNALITÉS SPÉCIFIQUES POUR LE BACK-END DU GROUPE M (LIVRABLE SERVEUR) -->
 <div class="section">
-    <h2>V. Fonctionnalités Spécifiques</h2>
+    <h2>V. Fonctionnalités Spécifiques pour le livrable serveur</h2>
     <ul>
         <li>
             <strong>Pages statiques :</strong>
@@ -321,6 +385,7 @@
                 <li>La fonction <code>get_static_content()</code> du modèle <em>static.php</em> lit ces fichiers pour les afficher.</li>
             </ul>
         </li>
+        <hr>
         <li>
             <strong>Identification (login) et session :</strong>
             <ul>
@@ -329,6 +394,7 @@
                 <li>Les informations de l’utilisateur (nom, rôle) sont sauvegardées en session.</li>
             </ul>
         </li>
+        <hr>
         <li>
             <strong>Menu dynamique à partir d’un fichier CSV :</strong>
             <ul>
@@ -336,12 +402,16 @@
                 <li>La fonction <code>get_menu_csv()</code> (dans <code>/app/models/common.php</code>) lit ce fichier et le menu est affiché dans <code>html_head()</code>.</li>
             </ul>
         </li>
+        <hr>
         <li>
             <strong>Contenu supplémentaire au menu :</strong>
             <ul>
-                <li>Le temps de lecture estimé des articles est calculé (via <code>estimate_time()</code> dans <code>/app/views/time.php</code>) et affiché dans la fonctionnalité de recherche par temps (<code>/app/controllers/time.php</code>).</li>
+                <li>Une liste des dates distinctes des articles est extraite depuis la base de données (via <code>get_all_dates_article()</code> dans <code>/app/models/article.php</code>).</li>
+                <li>Ces dates sont affichées dans le menu latéral via <code>html_date_sidebar()</code> (dans <code>/app/views/date.php</code>).</li>
+                <li>Chaque date permet de filtrer les articles affichés via l’URL <code>?page=press&date=YYYY-MM-DD</code>.</li>
             </ul>
         </li>
+        <hr>
         <li>
             <strong>Présentation d’articles sur la page d’accueil :</strong>
             <ul>
@@ -349,25 +419,30 @@
                 <li>L’affichage est réalisé via <code>html_home_main()</code> dans <code>/app/views/home.php</code>.</li>
             </ul>
         </li>
+        <hr>
         <li>
-            <strong>Recherche d’articles par dates :</strong>
+            <strong>Recherche d’articles par temps de lecture :</strong>
             <ul>
-                <li>Le contrôleur <code>search.php</code> gère la récupération des dates min et max ainsi que du mot-clé.</li>
-                <li>La vue <code>html_search_form()</code> affiche le formulaire de recherche.</li>
+                <li>Le contrôleur <code>search.php</code> gère la recherche par mot-clé, catégorie, et durée (min/max) via des sliders HTML.</li>
+                <li>La vue <code>html_search()</code> contient les curseurs de temps de lecture (1 à 30 min).</li>
             </ul>
         </li>
+        <hr>
         <li>
             <strong>Panier d’articles favoris :</strong>
             <ul>
-                <li>La fonctionnalité est gérée dans <code>/app/controllers/panier.php</code> et stockée en session.</li>
-                <li>Les favoris sont affichés via <code>html_panier_main()</code> dans <code>/app/views/panier.php</code>.</li>
+                <li>Les articles favoris sont sauvegardés dans un <strong>cookie</strong> sous forme JSON.</li>
+                <li>Le contrôleur <code>favorites.php</code> gère l’ajout et le retrait via les paramètres <code>action=add/remove</code>.</li>
+                <li>La vue <code>html_favorite_articles()</code> affiche le tableau des favoris.</li>
             </ul>
         </li>
+        <hr>
         <li>
             <strong>Options de présentation :</strong>
             <ul>
-                <li>La sélection de la police, de la couleur de fond et du style de bordure se fait via des listes déroulantes générées dans <code>/app/controllers/button.php</code>.</li>
-                <li>Les choix sont enregistrés en session par <code>/app/controllers/font.php</code> et appliqués dans <code>html_head()</code> (vue commune).</li>
+                <li>L’utilisateur peut choisir un <strong>thème</strong> (light, dark, grey) et une <strong>couleur de police</strong> (noir, rouge, bleu).</li>
+                <li>Les préférences sont enregistrées via des <code>setcookie()</code> dans <code>html_head()</code>.</li>
+                <li>Les classes CSS sont appliquées dynamiquement sur la balise <code>&lt;body&gt;</code>.</li>
             </ul>
         </li>
     </ul>
@@ -375,7 +450,81 @@
 
 <hr>
 
-<!-- VI. CONCLUSION -->
+<!-- V. FONCTIONNALITÉS SPÉCIFIQUES POUR LE FRONT-END DU GROUPE M (LIVRABLE CLIENT)-->
+<div class="section">
+    <h2>V. Fonctionnalités Spécifiques pour le livrable client</h2>
+    <ul>
+        <li>
+            <strong>Détail d’un article sur la page d’accueil :</strong>
+            <ul>
+                <li>Lorsqu’un utilisateur clique sur un article sur la page d’accueil, les détails s’affichent dynamiquement directement sur place (sans redirection).</li>
+                <li>Ce comportement est géré en JavaScript, via un événement <code>onclick</code> ou <code>addEventListener('click')</code> sur l’article.</li>
+                <li>Les détails (contenu, image, date...) sont insérés dans le DOM devant l’article sélectionné, dans un conteneur temporaire.</li>
+                <li>Un système permet également de refermer le détail pour revenir à l’affichage standard.</li>
+            </ul>
+        </li>
+        <hr>
+        <li>
+            <strong>Gestion des articles favoris :</strong>
+            <ul>
+                <li>Les articles ajoutés en favoris sont stockés côté client dans une variable de session (via <code>$_SESSION['favorites']</code>).</li>
+                <li>L’ajout ou le retrait d’un favori se fait par un lien avec les paramètres <code>?page=favorites&action=add&id=...</code> ou <code>action=remove</code>.</li>
+                <li>Le contrôleur <code>/app/controller/favorites.php</code> gère ces actions et met à jour la variable de session.</li>
+                <li>La vue <code>/app/view/favorites.php</code> affiche la liste des articles favoris avec un bouton « Retirer » pour chaque article.</li>
+                <li>Si l’utilisateur n’a aucun favori, un message informatif est affiché.</li>
+            </ul>
+        </li>
+        <hr>
+        <li>
+            <strong>Recherche avancée d’articles :</strong>
+            <ul>
+                <li>Le formulaire permet de filtrer les articles selon plusieurs critères combinés :</li>
+                <ul>
+                    <li><strong>Mot-clé :</strong> saisi dans un champ texte (champ <code>name_search</code>).</li>
+                    <li><strong>Date min/max :</strong> à implémenter ou déjà présente sous forme de filtres (optionnels).</li>
+                    <li><strong>Temps de lecture :</strong> défini via deux sliders (<code>min_readtime</code> et <code>max_readtime</code>).</li>
+                </ul>
+                <li>Le contrôleur <code>/app/controller/search.php</code> récupère les valeurs POST et filtre les articles selon ces critères.</li>
+                <li>Les articles sont ensuite affichés grâce à la fonction <code>html_search()</code> (vue <code>/app/view/search.php</code>).</li>
+                <li>La fonction <code>estimate_time()</code> permet de calculer la durée de lecture de chaque article pour effectuer le filtrage.</li>
+            </ul>
+        </li>
+        <hr>
+        <li>
+            <strong>Option de présentation – Thème :</strong>
+            <ul>
+                <li>Les utilisateurs peuvent choisir un thème d’apparence parmi <code>light</code>, <code>dark</code> ou <code>grey</code>.</li>
+                <li>Le choix est effectué via un menu déroulant dans l’en-tête de page (<code>html_head()</code>).</li>
+                <li>Le thème sélectionné est stocké dans un cookie (<code>theme</code>) pour être conservé à chaque visite.</li>
+                <li>Les classes CSS (<code>body.theme-light</code>, <code>.theme-dark</code>, etc.) appliquent les styles définis dans <code>/public/css/main.css</code>.</li>
+                <li>Ces styles personnalisent les couleurs de fond, de texte, de formulaire et d’en-tête en fonction du thème sélectionné.</li>
+            </ul>
+        </li>
+        <hr>
+        <li>
+            <strong>Option de présentation – Couleur de police :</strong>
+            <ul>
+                <li>L’utilisateur peut sélectionner une couleur de police parmi <code>noir</code>, <code>rouge</code> ou <code>bleu</code>.</li>
+                <li>Le choix est effectué via une liste déroulante située dans l’en-tête (<code>html_head()</code>).</li>
+                <li>La sélection est enregistrée dans un cookie nommé <code>font</code>.</li>
+                <li>Le cookie est relu à chaque chargement pour appliquer automatiquement la classe CSS correspondante (<code>.font-black</code>, <code>.font-red</code>, <code>.font-blue</code>).</li>
+                <li>Ces classes sont définies dans <code>/public/css/main.css</code> et appliquent la couleur choisie avec la directive <code>!important</code> pour écraser les autres styles.</li>
+            </ul>
+        </li>
+        <hr>
+        <li>
+            <strong>Bonus – Menu chargé dynamiquement :</strong>
+            <ul>
+                <li>Le menu principal du site est généré dynamiquement à partir d’un fichier CSV.</li>
+                <li>Le fichier <code>/asset/database/menu.csv</code> contient la liste des liens du menu au format <code>Nom;Lien</code>.</li>
+                <li>La fonction <code>get_menucsv()</code> dans <code>/app/model/common.php</code> lit ce fichier et retourne un tableau structuré.</li>
+                <li>Ce tableau est utilisé dans la fonction <code>html_head()</code> pour afficher les éléments du menu avec une boucle <code>foreach</code>.</li>
+                <li>Avantage : les liens du menu peuvent être modifiés sans toucher au code PHP, uniquement via le fichier CSV.</li>
+            </ul>
+        </li>
+        <hr>
+
+        <!-- VI. CONCLUSION -->
 <div class="section">
     <h2>VI. MERCI, C'ÉTAIT MERRIL ET NILTON À VOTRE SERVICE </h2>
 </div>
