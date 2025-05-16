@@ -1,4 +1,5 @@
 <?php
+
 /**
  * retourne l'article à afficher sur la home page
  * en première position
@@ -141,5 +142,3 @@ function get_article_counts_by_date(): array
 
     return $result;
 }
-
-

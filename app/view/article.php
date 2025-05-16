@@ -24,6 +24,7 @@ function html_article_main($article_a)
         </head>
 
     <section class="article-main">
+        <div id="article-detail-box" class="article-details-box"></div>
         <header class="article-header">
             <h1 class="article-title"><?= $title ?></h1>
             <?php if ($hook): ?>
@@ -159,5 +160,26 @@ function html_all_articles_main($article_aa, $is_search = false)
     return ob_get_clean();
 }
 
+function html_article_detail(array $article, string $role): string {
+    $date = $article['date_published'] ? date('d/m/Y', strtotime($article['date_published'])) : '';
+    $category = htmlspecialchars($article['category'] ?? '');
+    $word_count = $article['word_count'] ?? 0;
+    $reading_time = $article['reading_time'] ?? 0;
 
+    ob_start(); ?>
+    <div class="detail-content">
+        <p><strong>Date :</strong> <?= $date ?></p>
+        <p><strong>Catégorie :</strong> <?= $category ?></p>
+        <p><strong>Lecture :</strong> <?= $reading_time ?> min</p>
 
+        <?php if ($role === 'admin'): ?>
+            <hr class="detail-separator">
+            <p><strong>ID :</strong> <?= $article['id'] ?? '' ?></p>
+            <p><strong>Auteur :</strong> <?= htmlspecialchars($article['author'] ?? '') ?></p>
+            <p><strong>ID Image :</strong> <?= $article['image_id'] ?? '' ?></p>
+            <p><strong>Mots :</strong> <?= $word_count ?></p>
+        <?php endif; ?>
+    </div>
+    <?php
+    return ob_get_clean();
+}

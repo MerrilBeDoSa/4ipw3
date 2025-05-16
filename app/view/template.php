@@ -63,6 +63,7 @@ function html_head($menu_array = [])
                 crossorigin="anonymous"></script>
         <script src="./js/quirks/QuirksMode.js"></script>
         <script src="./js/internal/favorite.js"></script>
+        <script src="./js/internal/detail.js"></script>
     </head>
 
     <!-- le bitmoji keurr change visuellement apres cliquage sans redirection de la page -->

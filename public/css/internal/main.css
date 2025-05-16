@@ -1200,11 +1200,72 @@ liste de dates
     outline: none;
     box-shadow: 0 0 0 3px rgba(205, 213, 225, 0.5);
 }
+/* Styles pour l'overlay des détails */
+.article-detail-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 250px;
+    background: rgba(255, 255, 255, 0.13);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(11.2px);
+    -webkit-backdrop-filter: blur(11.2px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 15px;
+    font-size: 0.85rem;
+    z-index: 100;
+}
 
+.detail-content p {
+    margin: 0.3rem 0;
+    line-height: 1.4;
+}
 
+.detail-content strong {
+    color: #2c3e50;
+    font-weight: 600;
+}
 
+.detail-separator {
+    margin: 8px 0;
+    border: 0;
+    border-top: 1px solid #eee;
+}
 
+/* Assurez-vous que les articles ont position relative */
+.wsj-article-item, .wsj-featured-item {
+    position: relative;
+}
+/* Style pour l'overlay de connexion */
+.login-prompt-overlay {
+    position: absolute;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    width : 50px;
+    color: white;
+    padding: 8px;
+    text-align: center;
+    font-size: 0.9em;
+    z-index: 10;
+}
 
+/* Cache initial des overlays */
+.article-detail-overlay {
+    display: none;
+}
+
+/* Dans main.css */
+.wsj-article-item:not(.logged-in):hover::after {
+    content: "Connectez-vous pour voir les détails";
+    position: absolute;
+    bottom: 0;
+    background: #f8f9fa;
+    padding: 5px;
+    font-size: 0.8rem;
+    color: #6c757d;
+}
 
 
 
