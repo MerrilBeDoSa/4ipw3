@@ -365,6 +365,7 @@ time {
     font-size: 16px;
 }
 
+
 .readtime-slider {
     display: flex;
     align-items: center;
@@ -418,6 +419,74 @@ time {
     align-items: center;
     gap: 4px;
 }
+/* Layout recherche */
+/* conteneur général en 3 colonnes */
+.search-container {
+    display: flex;
+    gap: 2rem;
+    padding: 1.5rem;
+}
+/* les deux sidebars identiques */
+.search-sidebar {
+    flex: 0 0 250px;
+    background: #fff;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.search-sidebar h3 {
+    margin-top:0;
+    font-size:1.1rem;
+    text-align:center;
+}
+/* zone de résultats */
+.search-results {
+    flex: 1;
+}
+/* vedette */
+.featured-article {
+    margin-bottom:1.5rem;
+}
+/* grille 2 colonnes */
+.articles-grid .article-row {
+    display: flex;
+    gap:1rem;
+    margin-bottom:1rem;
+}
+/* boutons, champs */
+.search-form label {
+    display:block;
+    margin-bottom:1rem;
+    font-weight:600;
+}
+.search-form input[type=text],
+.search-form select {
+    width:100%;
+    padding:.5rem;
+    border:1px solid #ccc;
+    border-radius:4px;
+    margin-top:.3rem;
+}
+.readtime-slider {
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+}
+.readtime-slider input[type=range] {
+    flex:1;
+}
+.btn-primary {
+    display:inline-block;
+    padding:.6rem 1.2rem;
+    background:#3498db;
+    color:#fff;
+    border:none;
+    border-radius:4px;
+    cursor:pointer;
+}
+.btn-primary:hover { background:#2980b9; }
+
+
 
 /**
 Ajout de la gestion des articles
