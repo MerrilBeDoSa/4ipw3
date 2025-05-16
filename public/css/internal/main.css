@@ -8,6 +8,7 @@ body
     background-color: whitesmoke;
     /* font-size:10px; */
     /*width:26.2cm;*/
+    margin : 30px;
     min-height: 100%;
 
 }
@@ -1007,6 +1008,116 @@ liste de dates
     background-color: #0056b3;
     transform: translateY(-3px) scale(1.05);
 }
+
+/* Centrage article complet */
+.article-main {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+.article-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #e2e2e2;
+    padding-bottom: 1rem;
+}
+.article-title {
+    font-size: 2.4rem;
+    margin: 0;
+}
+.article-hook {
+    font-size: 1.3rem;
+    font-style: italic;
+    color: #666;
+    margin: .5rem 0 0;
+}
+.article-meta {
+    font-size: .9rem;
+    color: #888;
+    margin-top: .5rem;
+}
+.media_article {
+    text-align: center;
+    margin: 1.5rem 0;
+}
+.media_article img {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: cover;
+}
+.article-separator {
+    border: none;
+    height: 1px;
+    background: #e2e2e2;
+    margin: 1.5rem 0;
+}
+.article-content {
+    text-align: justify;
+    line-height: 1.6;
+    color: #333;
+}
+/* 1) Conteneur principal en flex */
+.search-container {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+/* Chaque aside = barre latérale */
+.search-sidebar {
+    flex: 0 0 200px;      /* fixe la largeur par défaut */
+    background: #fff;
+    padding: 1rem;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Zone résultats prend tout le reste */
+.search-results {
+    flex: 1;
+    background: #fff;
+    padding: 1rem;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* 2) Media query pour écrans moyen et petits */
+@media (max-width: 992px) {
+    .search-sidebar {
+        flex: 0 0 150px;
+    }
+}
+
+@media (max-width: 768px) {
+    .search-container {
+        flex-direction: column;
+    }
+    .search-sidebar {
+        width: 100% !important;
+        flex: none;
+        margin-bottom: 1rem;
+    }
+    .search-results {
+        width: 100%;
+    }
+}
+
+/* petits écrans */
+@media (max-width: 480px) {
+    .search-form label {
+        display: block;
+        margin-bottom: .5rem;
+    }
+    .readtime-slider {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .readtime-slider span {
+        margin-top: .5rem;
+    }
+}
+
 
 
 
