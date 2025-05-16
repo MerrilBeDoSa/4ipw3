@@ -48,7 +48,7 @@ function html_article_main($article_a)
 
 function html_article_preview($article, $is_featured = false)
 {
-    // Vérification et remplacement des valeurs null
+    // Verification et remplacement des valeurs null
     $title = $article['title'] ?? 'Titre non disponible';
     $hook = $article['hook'] ?? '';
     $date = $article['date_published'] ?? 'Date inconnue';
