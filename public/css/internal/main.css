@@ -573,7 +573,8 @@ body.theme-grey {
 .wsj-article-meta,
 .article-content,
 .article-date,
-.article-main .article-header,
+.article-main,
+.article-main .article-title,.article-main .article-header, .article-main .article-meta, .article-main .article-hook,
 h1, h2, h3, h4, h5, h6,
 a {
     color: inherit !important;
@@ -582,6 +583,8 @@ a {
 .wsj-heart-icon {
     color: inherit;
 }
+
+
 
 
 body.font-black {
