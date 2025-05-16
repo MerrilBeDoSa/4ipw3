@@ -19,6 +19,10 @@ function html_article_main($article_a)
 
     ob_start();
     ?>
+        <head>
+            <link rel="stylesheet" href="./css/internal/main.css" /> <!-- lib interne / perso -->
+        </head>
+
     <section class="article-main">
         <header class="article-header">
             <h1 class="article-title"><?= $title ?></h1>
