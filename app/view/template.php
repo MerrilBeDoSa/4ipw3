@@ -203,6 +203,18 @@ function html_foot()
 {
     ob_start();
     ?>
+    <!-- Logo WSJ au-dessus du footer -->
+    <div class="wsj-footer-logo-bar">
+        <div class="container d-flex flex-column align-items-start py-4 px-3">
+            <img src="./media/wsj-logo.png" alt="Wall Street Journal Logo" class="wsj-logo">
+            <span class="wsj-subtitle">a Dow Jones company</span>
+        </div>
+    </div>
+
+
+
+
+
     <footer>
         <?= html_footer_full() ?> <!-- Ceci appelle le footer complet -->
         Made with the amazing AWebWiz framework
