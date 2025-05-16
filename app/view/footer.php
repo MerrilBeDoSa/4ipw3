@@ -44,20 +44,28 @@ function html_footer_full(): string
                 <h4>ADS</h4>
                 <ul>
                     <li>Advertise</li>
-                    <li>Classified Ads</li>
+                    <li>Commercial Real Estate ADS</li>
+                    <li>Place a Classified A</li>
                     <li>Sell Your Business</li>
-                    <li>Recruitment Ads</li>
+                    <li>Sell Your Home</li>
+                    <li>Recruitment & Career Ads</li>
+                    <li>Digital Self Service</li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h4>More</h4>
                 <ul>
                     <li>About Us</li>
-                    <li>Partnerships</li>
+                    <li>Content Partnerships</li>
                     <li>Corrections</li>
-                    <li>Jobs</li>
-                    <li>WSJ Shop</li>
+                    <li>Jobs at WSJ.</li>
                     <li>News Archive</li>
+                    <li>Register for Free</li>
+                    <li>Reprints & Licensing</li>
+                    <li>Buy Issues</li>
+                    <li>WSJ Shop</li>
+                    <li>Down Jones Press Room</li>
+                    <li>Down Jones Smart Money</li>
                 </ul>
             </div>
         </div>
