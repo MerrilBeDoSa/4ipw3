@@ -575,6 +575,7 @@ body.theme-grey {
 .article-date,
 .article-main,
 .article-main .article-title,.article-main .article-header, .article-main .article-meta, .article-main .article-hook,
+.sponsor-banner,
 h1, h2, h3, h4, h5, h6,
 a {
     color: inherit !important;
@@ -1137,6 +1138,25 @@ liste de dates
         font-size: 0.95rem;
     }
 }
+.sponsor-banner {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    background: var(--sponsor-bg) no-repeat center / cover;
+    transform: scale(0.9);
+    color: var(--sponsor-color);
+}
+
+.sponsor-gauche {
+    flex: 1;
+}
+
+.sponsor-droite img {
+    max-width: 200px;
+    height: auto;
+}
+
+
 
 /* les favoris */
 .fw-bold {
