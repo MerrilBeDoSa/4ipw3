@@ -122,3 +122,24 @@ SQL;
     return $stmt->fetchAll();
 }
 
+// Ajout d'une nouvelle fonction
+function get_article_counts_by_date(): array
+{
+    $pdo = get_pdo();
+    $sql = "
+        SELECT date_art, COUNT(*) as nb_articles
+        FROM t_article
+        GROUP BY date_art
+        ORDER BY date_art DESC
+    ";
+    $stmt = $pdo->query($sql);
+
+    $result = [];
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $result[$row['date_art']] = (int)$row['nb_articles'];
+    }
+
+    return $result;
+}
+
+

@@ -881,6 +881,66 @@ body.font-red {
     color: #f0f0f0 !important; /* noir sur fond noir n'est pas visible */
 }
 
+/**
+liste de dates
+ */
+.dates-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: center;
+    padding: 10px;
+}
+
+.date-badge {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.date-badge:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.date-section h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.dates-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+}
+
+.date-badge {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 500;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transition: all 0.2s ease-in-out;
+}
+
+.date-badge:hover {
+    background-color: #0056b3;
+    transform: translateY(-3px) scale(1.05);
+}
+
+
+
 
 
 
