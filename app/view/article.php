@@ -12,35 +12,40 @@ function html_article_main($article_a)
     $title = htmlspecialchars($article_a['title'] ?? '');
     $hook = htmlspecialchars($article_a['hook'] ?? '');
     $content = $article_a['content'] ?? '';
-    $date = htmlspecialchars($article_a['date_published'] ?? '');
-    $image_name = $article_a['image_name'] ?? '';
-    $image_path = !empty($image_name) ? MEDIA_ARTICLE_PATH . htmlspecialchars($image_name) : '';
+    $date_raw = htmlspecialchars($article_a['date_published'] ?? '');
+    $date_iso = date('Y-m-d', strtotime($date_raw));
+    $date = date('d F Y', strtotime($date_raw));
 
-    // Vérification de l'extension de l'image
-    $image_base = pathinfo($article_a['image_name'] ?? '', PATHINFO_FILENAME); // Nom sans extension
+    // Résolution du chemin de l'image (png, jpg, ...)
+    $image_base = pathinfo($article_a['image_name'] ?? '', PATHINFO_FILENAME);
     $image_path = resolve_image_path($image_base);
 
-    $out = <<<HTML
-    <section class="article">
-        <article>
-            <h1>$title</h1>
-            <h2>$hook</h2>
-    HTML;
+    ob_start();
+    ?>
+    <section class="article-main">
+        <header class="article-header">
+            <h1 class="article-title"><?= $title ?></h1>
+            <?php if ($hook): ?>
+                <h2 class="article-hook"><?= $hook ?></h2>
+            <?php endif; ?>
+            <div class="article-meta">
+                <time datetime="<?= $date_iso ?>" class="article-date"><?= $date ?></time>
+            </div>
+        </header>
 
-    if (!empty($image_path)) {
-        $out .= <<<HTML
-            <div class="media_article"><img src="$image_path" class="rounded shadow-sm" loading="lazy" alt="$title" width="972"></div>
-        HTML;
-    }
+        <?php if (!empty($image_path)): ?>
+            <div class="media_article">
+                <img src="<?= htmlspecialchars($image_path) ?>" alt="<?= $title ?>">
+            </div>
+            <hr class="article-separator">
+        <?php endif; ?>
 
-    $out .= <<<HTML
-            <div class="article-date">$date</div>
-            <div class="article-content">$content</div>
-        </article>
+        <div class="article-content">
+            <?= $content ?>
+        </div>
     </section>
-    HTML;
-
-    return $out;
+    <?php
+    return ob_get_clean();
 }
 
 function html_article_preview($article, $is_featured = false)
