@@ -1085,6 +1085,39 @@ liste de dates
     }
 }
 
+.full-footer {
+    background-color: #f5f5f5;
+    padding: 2rem;
+    font-size: 0.9rem;
+    color: #000;
+}
+.footer-sections {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2rem;
+}
+.footer-col {
+    flex: 1 1 180px;
+}
+.footer-col h4 {
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+}
+.footer-col li {
+    margin-bottom: 0.5rem;
+}
+.footer-bottom {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.8rem;
+    color: #555;
+}
+
 
 
 

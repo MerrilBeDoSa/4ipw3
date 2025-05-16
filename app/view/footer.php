@@ -62,7 +62,7 @@ function html_footer_full(): string
             </div>
         </div>
         <div class="footer-bottom">
-            <p>Copyright ©<?= date('Y') ?> Dow Jones & Company, Inc. All Rights Reserved.</p>
+            <!-- <p>Copyright ©<?= date('Y') ?> Dow Jones & Company, Inc. All Rights Reserved.</p> -->
         </div>
     </footer>
     <?php return ob_get_clean();
