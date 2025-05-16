@@ -41,7 +41,7 @@
     <li>Option de présentation : thème : : light or dark or grey</li>
     <li>Option de présentation : font : : 3 fonts policies</li>
     <li>Bonus : menu : chargement dynamique</li>
-</ul>
+</ul>a
 
 <hr>
 
@@ -77,6 +77,8 @@
     <h3>1. controller/article.php</h3>
     <ul>
         <li><strong>Ajout :</strong>Fonction<code>main_article()</code>qui affiche un seul article complet.</li>
+        <li><strong>Gestion des favoris :</strong> Si le paramètre <code>fav_toggle</code> est présent,
+            la fonction ajoute ou supprime l’article des favoris via un cookie JSON. Elle redirige ensuite pour éviter les doublons au rechargement.</li>
         <li><strong>Validation :</strong>Vérifie que le paramètre  <code>art_id</code> est bien en entier positif.</li>
         <li><strong>Traitement :</strong>Utilise la fonction <code>get_article_a()</code> pour récupérer les données de l'article depuis le modèle.</li>
         <li><strong>Affichage :</strong>Génère l’en-tête, le contenu de l’article (via <code>html_article_main()</code>) et le pied de page HTML.</li>
@@ -85,29 +87,35 @@
     <h3>2. controller/dates.php</h3>
     <ul>
         <li><strong>Ajout :</strong>Fonction<code>main_dates()</code> pour afficher la liste des dates distinctes des articles.</li>
-        <li><strong>Dépendances :</strong>Utilise <code>get_all_dates_article()</code> du modèle pour extraire les dates depuis la base de données.</li>
+        <li><strong>Dépendances :</strong> Utilise <code>get_all_dates_article()</code> pour récupérer les dates et <code>get_article_counts_by_date()</code> pour compter le nombre d’articles par date.</li>
         <li><strong>Affichage :</strong> Génère une page HTML avec l’en-tête, la liste des dates via <code>html_date_sidebar()</code> et le pied de page.</li>
     </ul>
 
-    <h3>3. controller/favorites.php</h3>
+    <h3>3. controller/favorite.php</h3>
     <ul>
-        <li><strong>Ajout :</strong>Fonction<code>main_favorites()</code> qui gère l'ajout, la suppression et l'affichage des articles favoris.</li>
+        <li><strong>Ajout :</strong> Fonction <code>main_favorites()</code> qui gère l'ajout, la suppression, le vidage et l'affichage des articles favoris.</li>
         <li><strong>Dépendances :</strong> Utilise <code>get_article_a()</code> et <code>get_menucsv()</code> du modèle, ainsi que <code>html_favorite_articles()</code>, <code>html_head()</code> et <code>html_foot()</code> des vues.</li>
         <li><strong>Paramètres GET :</strong>
             <ul>
-                <li><code>action</code> : soit <code>add</code> (ajouter aux favoris), soit <code>remove</code> (retirer des favoris)</li>
-                <li><code>id</code> : identifiant numérique de l’article concerné</li>
+                <li><code>action</code> :
+                    <code>add</code> (ajouter un favori),
+                    <code>remove</code> (retirer un favori),
+                    <code>clear</code> (vider tous les favoris)
+                </li>
+                <li><code>id</code> : identifiant numérique de l’article concerné (requis pour <code>add</code> et <code>remove</code>)</li>
             </ul>
         </li>
-        <li><strong>Traitement :</strong> Lit les favoris dans le cookie <code>favorites</code> (JSON), met à jour le tableau selon l’action, puis le réécrit dans un nouveau cookie.</li>
-        <li><strong>Redirection :</strong> Une fois le traitement terminé, redirige vers la page <code>?page=favorites</code> pour éviter la répétition de l’action.</li>
-        <li><strong>Affichage :</strong> Affiche les articles favoris dans une grille via <code>html_favorite_articles()</code>.</li>
+        <li><strong>Traitement :</strong> Lit les favoris dans le cookie <code>favorites</code> (JSON), met à jour le tableau selon l’action, puis le réécrit dans un nouveau cookie valable 30 jours.</li>
+        <li><strong>Redirection :</strong> Après traitement, redirige vers la page <code>?page=favorites</code> pour éviter un double traitement lors du rechargement.</li>
+        <li><strong>Affichage :</strong> Récupère les articles favoris valides et les affiche dans une grille via <code>html_favorite_articles()</code>.</li>
     </ul>
+
 
     <h3>4. controller/home.php</h3>
     <ul>
         <li><strong>Ajout :</strong> Fonction <code>main_home()</code> pour afficher la page d’accueil du site.</li>
         <li><strong>Données :</strong> Récupère les 10 derniers articles de la catégorie <code>id = 146</code> ("On n’est pas des pigeons") grâce à <code>get_latest_articles_by_category()</code>.</li>
+        <li><strong>Menu :</strong> Utilise <code>get_menucsv()</code> pour générer dynamiquement le menu à partir d’un fichier CSV.</li>
         <li><strong>Affichage :</strong> Utilise <code>html_all_articles_main()</code> pour afficher les articles, avec un en-tête (menu) et un pied de page.</li>
     </ul>
 
@@ -117,6 +125,7 @@
         <li><strong>Connexion :</strong> Récupération des identifiants via POST. Vérification avec la fonction <code>login_validate()</code> (modèle).</li>
         <li><strong>Déconnexion :</strong> Via l'URL <code>?action=logout</code>, la session est détruite et l'utilisateur est redirigé vers l’accueil.</li>
         <li><strong>Session :</strong> Utilisation de <code>$_SESSION</code> pour mémoriser les informations de connexion (nom et rôle).</li>
+        <li><strong>Accès protégé :</strong> La fonction <code>require_login()</code> redirige les utilisateurs non connectés vers la page de connexion.</li>
         <li><strong>Affichage :</strong> Statut de l’utilisateur, message flash, formulaire ou bouton de déconnexion selon l’état connecté ou non.</li>
     </ul>
 
@@ -125,77 +134,41 @@
         <li><strong>Ajout :</strong> Fonction <code>main_press()</code> qui permet d’afficher les articles filtrés par date (via <code>?date=YYYY-MM-DD</code>).</li>
         <li><strong>Paramètre GET :</strong> Si une date est présente dans l’URL, les articles correspondants sont récupérés avec <code>get_articles_by_date()</code>.</li>
         <li><strong>Fallback :</strong> Si aucune date n’est passée, la liste des articles est vide (à adapter si besoin).</li>
+        <li><strong>Menu :</strong> Le menu est généré dynamiquement à partir d’un fichier CSV via <code>get_menucsv()</code>.</li>
         <li><strong>Affichage :</strong> Utilisation de <code>html_all_articles_main()</code> pour afficher les articles dans la vue.</li>
     </ul>
 
     <h3>7. controller/search.php</h3>
     <ul>
-        <li><strong>Fonction :</strong> <code>main_search()</code></li>
-        <li><strong>Rôle :</strong> Affiche tous les articles accompagnés du formulaire de recherche :
+        <li><strong>Ajout :</strong> Fonction <code>main_search()</code> qui affiche un formulaire de recherche multi-critères et les résultats associés.</li>
+        <li><strong>Filtres de recherche :</strong>
             <ul>
-                <li>Récupère tous les articles grâce à la fonction <code>get_article_a()</code>.</li>
-                <li>Affiche le formulaire de recherche avec <code>html_search_form()</code>.</li>
-                <li>Affiche tous les articles (non filtrés) via <code>html_all_articles_main()</code>.</li>
+                <li><code>name_search</code> : mot-clé présent dans le titre, le hook ou le contenu de l’article</li>
+                <li><code>min_readtime</code> et <code>max_readtime</code> : plage de temps de lecture en minutes</li>
+                <li><code>category_filter</code> : filtre par catégorie</li>
             </ul>
         </li>
-        <li><strong>Lien :</strong> Accessible via <code>?page=search</code>.</li>
+        <li><strong>Données :</strong> Récupère dynamiquement toutes les catégories via <code>get_all_categories()</code> pour alimenter la liste déroulante.</li>
+        <li><strong>Traitement :</strong> Si l'utilisateur a cliqué sur le bouton de recherche, exécute <code>search_articles()</code> pour récupérer les résultats filtrés en SQL.</li>
+        <li><strong>Affichage :</strong> Génère la page avec l’en-tête, le formulaire de recherche et les résultats via <code>html_search()</code>, suivi du pied de page.</li>
     </ul>
 
-    <h3>8. controller/static.php</h3>
+    <h3>8. controller/sponsor.php</h3>
     <ul>
-        <li><strong>Ajout :</strong> Fonction <code>main_static()</code> qui affiche une page statique HTML (à propos, mentions légales, etc.).</li>
-        <li><strong>Dépendances :</strong> Utilise <code>get_menucsv()</code> pour générer le menu, et <code>file_get_contents()</code> pour charger le fichier HTML depuis <code>asset/static_content/about.html</code>.</li>
-        <li><strong>Affichage :</strong> Assemble l’en-tête avec <code>html_head()</code>, le contenu statique et le pied de page via <code>html_foot()</code>.</li>
+        <li><strong>Ajout :</strong> Fonction <code>main_sponsor()</code> qui affiche une page statique dédiée aux sponsors.</li>
+        <li><strong>Données :</strong> Récupère le contenu sponsorisé (ex. : bannière, message) via la fonction <code>get_sponsor_content()</code>.</li>
+        <li><strong>Menu :</strong> Génère le menu principal avec <code>get_menucsv()</code>.</li>
+        <li><strong>Affichage :</strong> Produit la page HTML complète avec l’en-tête (<code>html_head()</code>), le contenu sponsorisé via <code>html_banner()</code> et le pied de page (<code>html_foot()</code>).</li>
     </ul>
 
-   <!-- //////////////////////////////////////////////
 
-    <h3>7. panier.php</h3>
+    <h3>9. controller/static.php</h3>
     <ul>
-        <li><strong>Fonction :</strong> <code>main_panier()</code></li>
-        <li><strong>Rôle :</strong> Gère l’ajout et la suppression d’articles favoris dans le « panier » (stocké dans la session) et affiche la liste des favoris par le view <code>html_panier_main()</code>.</li>
+        <li><strong>Fonction :</strong> <code>main_static()</code> permet d'afficher une page HTML statique (ex. : à propos, mentions légales).</li>
+        <li><strong>Dépendances :</strong> Utilise <code>get_menucsv()</code> pour générer le menu, et <code>file_get_contents()</code> pour charger le contenu statique depuis <code>asset/static_content/about.html</code>.</li>
+        <li><strong>Affichage :</strong> Assemble le HTML complet avec l’en-tête (<code>html_head()</code>), le contenu déjà formaté en HTML, et le pied de page (<code>html_foot()</code>).</li>
     </ul>
 
-    <h3>8. press.php</h3>
-    <ul>
-        <li><strong>Fonction :</strong> <code>main_press()</code></li>
-        <li><strong>Rôle :</strong> Pour récupérer une liste d’articles (limité à 20) et afficher le contenu par le view, c'est votre code, rien ne change : <code>html_all_articles_main()</code>.</li>
-    </ul>
-
-    <h3>9. search.php (search)</h3>
-    <ul>
-        <li><strong>Fonction :</strong> <code>main_search()</code></li>
-        <li><strong>Rôle :</strong> Gère la recherche d’articles par mot-clé, c'est votre code monsieur et je me suis basé sur ça pour ajouter la recherche par des dates (<code>search_date_min</code> et <code>search_date_max</code>).
-            Il récupère les données par le model et appelle le view pour afficher le formulaire de recherche et les résultats.</li>
-    </ul>
-
-    <h3>10. sponsor.php</h3>
-    <ul>
-        <li><strong>Fonction :</strong> <code>main_sponsor()</code></li>
-        <li><strong>Rôle :</strong> Récupère le contenu du sponsor depuis le model (<code>get_sponsor_content()</code>) et affiche la bannière par le view <code>html_banner()</code>.</li>
-    </ul>
-
-    <h3>11. static.php</h3>
-    <ul>
-        <li><strong>Fonction :</strong> <code>main_static()</code></li>
-        <li><strong>Rôle :</strong> Rien à modifier, c'est votre code, j'écris juste pour me rappeler : elle permet d’afficher des pages statiques. Il lit le contenu d’un fichier HTML situé dans <code>/asset/static_content</code> (<code>get_static_content()</code>) et assemble la page avec l’en-tête et le pied de page.</li>
-    </ul>
-
-    <h3>12. time.php</h3>
-    <ul>
-        <li><strong>Fonction :</strong> <code>main_time()</code></li>
-        <li><strong>Rôle :</strong> Gère la recherche d’articles en fonction du temps de lecture souhaité :
-            <ul>
-                <li>Récupère la durée saisie par l’utilisateur.</li>
-                <li>Utilise la fonction <code>estimate_time()</code> (dans le view) pour calculer le temps de lecture de chaque article.</li>
-                <li>Filtre les articles et affiche le résultat via <code>html_time_search_form()</code> et <code>html_time_list()</code>.</li>
-            </ul>
-        </li>
-    </ul>
-</div>
-
-//////////////////////////////////////////////
--->
 <hr>
 
 <!-- III. MODELS -->
@@ -205,64 +178,66 @@
     <h3>1. model/article.php</h3>
     <ul>
         <li><strong>Fonctionnalités principales :</strong></li>
-        <ul>
-            <li><code>get_article_a($id)</code> : Récupère un article spécifique (par défaut l’article d’ID 1 pour la home).</li>
-            <li><code>get_article_a_sql($id)</code> : Exécute la requête SQL pour obtenir un article via son ID.</li>
-            <li><code>get_latest_articles_by_category($id, $limit)</code> : Récupère les derniers articles d’une catégorie (ex. cat. 146 = "On n’est pas des pigeons").</li>
-            <li><code>get_all_dates_article()</code> : Récupère toutes les dates distinctes des articles (utilisé pour la sidebar).</li>
-            <li><code>get_articles_by_date($date)</code> : Récupère tous les articles publiés à une date précise.</li>
-            <li><code>get_pdo()</code> : Singleton pour établir une connexion PDO à la base de données.</li>
-        </ul>
-        <li><strong>Dépend de :</strong> la constante <code>DATABASE_TYPE</code> et des infos de connexion (DSN, username, password).</li>
+        <li>
+            <ul>
+                <li><code>get_article_a($id)</code> : Récupère un article spécifique en fonction de son ID. Par défaut, retourne l’article d’ID 1.</li>
+                <li><code>get_article_a_sql($id)</code> : Exécute la requête SQL pour récupérer les données complètes d’un article par son identifiant.</li>
+                <li><code>get_latest_articles_by_category($id, $limit)</code> : Récupère les derniers articles d’une catégorie spécifique, triés par date décroissante (par ex. : catégorie 146 = « On n’est pas des pigeons »).</li>
+                <li><code>get_all_dates_article()</code> : Récupère toutes les dates distinctes (au format YYYY-MM-DD) des articles publiés, utilisées pour générer une sidebar de filtrage.</li>
+                <li><code>get_articles_by_date($date)</code> : Récupère tous les articles correspondant à une date précise (passée en paramètre).</li>
+                <li><code>get_article_counts_by_date()</code> : Retourne un tableau associatif avec les dates et le nombre d’articles publiés à chaque date (ex. : ['2024-01-01' => 3]).</li>
+                <li><code>get_pdo()</code> : Fonction singleton qui crée et retourne une instance PDO connectée à la base de données MySQL.</li>
+            </ul>
+        </li>
+        <li><strong>Dépendances :</strong> Les fonctions dépendent de la constante <code>DATABASE_TYPE</code> ainsi que des constantes de connexion à la base de données : <code>DATABASE_DSN</code>, <code>DATABASE_USERNAME</code> et <code>DATABASE_PASSWORD</code>.</li>
     </ul>
+
 
     <h3>2. model/common.php</h3>
     <ul>
-        <li><strong>Fonctions :</strong>
+        <li><strong>Fonction :</strong></li>
+        <li>
             <ul>
-                <li><code>get_menucsv()</code> : Charge les éléments du menu depuis le fichier <code>menu.csv</code> situé dans <code>/asset/database</code>.</li>
-                <li><code>get_last_dates()</code> : Génère un tableau contenant les <em>n</em> dernières dates (par défaut 7), à partir de la date du jour.</li>
+                <li><code>get_menucsv()</code> : Lit le fichier <code>/asset/database/menu.csv</code> et retourne un tableau à deux colonnes représentant les éléments du menu (nom et identifiant de page). Si le fichier est introuvable, retourne un menu avec une entrée d'erreur.</li>
             </ul>
         </li>
-        <li><strong>Rôle :</strong> Fournir des fonctions utilitaires réutilisables (menu dynamique, dates récentes).</li>
+        <li><strong>Rôle :</strong> Centraliser les fonctions utilitaires du projet (ex. : génération dynamique du menu principal).</li>
     </ul>
 
     <h3>3. model/login.php</h3>
     <ul>
-        <li><strong>Fonction :</strong>
+        <li><strong>Fonction :</strong></li>
+        <li>
             <ul>
-                <li><code>login_validate(\$input_login, \$input_password)</code> : Vérifie si le couple identifiant/mot de passe existe dans <code>login.csv</code> et retourne un tableau contenant : validité, nom et rôle.</li>
+                <li><code>login_validate($input_login, $input_password)</code> : Vérifie si le couple identifiant / mot de passe existe dans le fichier <code>login.csv</code> (situé dans <code>/asset/database/</code>). Retourne un tableau contenant : <code>[bool validité, string nom, string|null rôle]</code>.</li>
             </ul>
         </li>
-        <li><strong>Rôle :</strong> Authentifier les utilisateurs en lisant un fichier CSV local, sans base de données.</li>
+        <li><strong>Rôle :</strong> Authentifier les utilisateurs en lisant un fichier CSV local, sans passer par une base de données. Le format attendu est : <code>login;password;role</code>.</li>
     </ul>
 
-    <h3>4. model/template.php</h3>
+    <h3>4. model/sponsor.php</h3>
     <ul>
-        <li><strong>Fonction :</strong>
+        <li><strong>Fonction :</strong></li>
+        <li>
             <ul>
-                <li>Inclut <code>common.php</code> pour accéder à <code>get_menucsv()</code> sans redondance.</li>
-                <li>Initialise le menu via <code>\$menu = get_menucsv()</code>.</li>
+                <li><code>get_sponsor_content()</code> : Récupère les données du sponsor à partir d’un fichier JSON distant situé à l’URL <code>http://playground.burotix.be/adv/banner_for_isfce.json</code>. Retourne le contenu de la bannière identifié par la clé <code>banner_4IPDW</code>, ou <code>null</code> si absent.</li>
             </ul>
         </li>
-        <li><strong>Rôle :</strong> Centraliser l’accès au menu CSV dans les autres vues ou contrôleurs.</li>
+        <li><strong>Rôle :</strong> Charger dynamiquement du contenu sponsorisé (ex. : bannière publicitaire) à intégrer dans une vue du site.</li>
     </ul>
 
-    <!--//////////////////////////////////////////////
-
-    <h3>5. sponsor.php</h3>
+    <h3>5. model/template.php</h3>
     <ul>
-        <li><strong>Fonction :</strong> <code>get_sponsor_content()</code></li>
-        <li><strong>Rôle :</strong> Récupère et décode un fichier JSON distant contenant les informations de la bannière sponsor.</li>
+        <li><strong>Fonction :</strong></li>
+        <li>
+            <ul>
+                <li>Inclut <code>common.php</code> afin d’utiliser la fonction <code>get_menucsv()</code> sans duplication de code.</li>
+                <li>Initialise une variable globale <code>$menu</code> contenant les éléments du menu issus de <code>menu.csv</code>.</li>
+            </ul>
+        </li>
+        <li><strong>Rôle :</strong> Fournir un point d’entrée rapide pour charger le menu CSV dans les autres scripts (contrôleurs, vues, etc.). Sert de fichier d’initialisation partagée.</li>
     </ul>
 
-    <h3>6. static.php</h3>
-    <ul>
-        <li><strong>Fonction :</strong> <code>get_static_content()</code></li>
-        <li><strong>Rôle :</strong> Lit les fichiers HTML (about.html, cgv.html) dans le dossier <code>/asset/static_content</code> pour afficher des pages statiques.</li>
-    </ul>
-</div>
-////////////////////////////////////////////// -->
 <hr>
 
 <!-- IV. VIEWS -->
@@ -287,7 +262,7 @@
         <li><strong>Rôle :</strong> Affiche une liste verticale des dates distinctes d’articles dans une <code>&lt;aside&gt;</code>, chaque date étant un lien vers la page "Presse" avec un filtre par date (<code>?page=press&date=YYYY-MM-DD</code>).</li>
     </ul>
 
-    <h3>view/favorites.php</h3>
+    <h3>3. view/favorites.php</h3>
     <ul>
         <li><strong>Fonction :</strong> <code>html_favorite_articles(array $articles)</code></li>
         <li><strong>But :</strong> Affiche une table des articles ajoutés en favoris par l'utilisateur.</li>
@@ -300,13 +275,37 @@
         <li><strong>Comportement :</strong> Le bouton "Retirer" supprime l’article des favoris via un lien avec <code>action=remove</code> et l’<code>id</code> de l’article.</li>
     </ul>
 
-    <h3>4. view/home.php</h3>
+    <h3>4. view/footer.php</h3>
     <ul>
-        <li><strong>Fonction :</strong> <code>html_body()</code></li>
-        <li><strong>Rôle :</strong> Génère une section HTML simple avec un titre et un paragraphe de bienvenue (“HOME — Ceci est notre site”).</li>
+        <li><strong>Fonction :</strong> <code>html_footer_full()</code></li>
+
+        <li><strong>Rôle :</strong> Génère le code HTML complet du pied de page du site, inspiré de la structure du Wall Street Journal (WSJ).</li>
+
+        <li><strong>Structure :</strong>
+            <ul>
+                <li>5 colonnes principales (<code>.footer-col</code>) contenant des listes de liens thématiques : WSJ Membership, Customer Service, Tools & Features, Ads, More.</li>
+                <li>Chaque colonne utilise un titre (<code>&lt;h4&gt;</code>) suivi d’une liste non ordonnée de ressources.</li>
+                <li>Section <code>.footer-bottom</code> prévue pour les mentions légales (commentée dans la version actuelle).</li>
+            </ul>
+        </li>
+
+        <li><strong>Affichage :</strong> Retourne une chaîne HTML complète à insérer dans toutes les pages du site via une inclusion (<code>ob_start()</code> / <code>ob_get_clean()</code>).</li>
     </ul>
 
-    <h3>5. view/login.php</h3>
+    <h3>5. view/home.php</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>html_body()</code></li>
+        <li><strong>Rôle :</strong> Génère une structure HTML de base pour la page d’accueil, avec un titre principal <code>&lt;h2&gt;</code> et un paragraphe de présentation.</li>
+        <li><strong>Contenu :</strong>
+            <ul>
+                <li>Titre : <code>HOME</code></li>
+                <li>Texte introductif : <code>Ceci est notre site</code></li>
+            </ul>
+        </li>
+        <li><strong>Affichage :</strong> Utilise la méthode <code>ob_start()</code> pour capturer et retourner le HTML sous forme de chaîne, comme pour les autres vues du projet.</li>
+    </ul>
+
+    <h3>6. view/login.php</h3>
     <ul>
         <li><strong>Fonctions :</strong>
             <ul>
@@ -320,7 +319,52 @@
         <li><strong>Rôle :</strong> Gère l'affichage des éléments liés à la connexion utilisateur (formulaire, statut, messages).</li>
     </ul>
 
-    <h3>6. view/template.php</h3>
+    <h3>7. view/search.php</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>html_search(int \$min_readtime, int \$max_readtime, string \$keyword, string \$selected_cat, array \$category_aa, array \$search_results)</code></li>
+        <li><strong>Rôle :</strong> Génère l’interface complète de recherche avancée d’articles, avec filtres par mot-clé, temps de lecture, et catégorie, ainsi que l’affichage des résultats.</li>
+        <li><strong>Structure :</strong>
+            <ul>
+                <li><strong>Formulaire (englobant les deux <code>&lt;aside&gt;</code>) :</strong></li>
+                <ul>
+                    <li><code>Mot-clé</code> : champ texte pour chercher dans les titres, hooks, ou contenus</li>
+                    <li><code>Temps de lecture</code> : double slider (min/max entre 1 et 30 minutes)</li>
+                    <li><code>Catégorie</code> : menu déroulant alimenté dynamiquement par <code>\$category_aa</code></li>
+                </ul>
+                <li><strong>Résultats (<code>&lt;main&gt;</code>) :</strong></li>
+                <ul>
+                    <li>Affiche un message si aucun résultat n’est trouvé</li>
+                    <li>Sinon, affiche un décompte, un article vedette (via <code>html_article_preview(..., true)</code>), puis une grille des autres résultats</li>
+                </ul>
+            </ul>
+        </li>
+        <li><strong>Affichage :</strong> Retourne une structure HTML complète incluant le formulaire de recherche et les résultats dynamiques, selon les données POST envoyées.</li>
+    </ul>
+
+    <h3>8. view/sponsor.php</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>html_banner(array $data)</code></li>
+        <li><strong>Rôle :</strong> Génère dynamiquement une bannière HTML sponsorisée à partir d’un tableau associatif contenant les données d’un sponsor (texte, couleur, images, lien, etc.).</li>
+        <li><strong>Données attendues (<code>$data</code>) :</strong>
+            <ul>
+                <li><code>text</code> : message promotionnel (affiché avec gestion des sauts de ligne via <code>nl2br()</code>)</li>
+                <li><code>color</code> : couleur principale de la bannière (injectée en CSS personnalisée)</li>
+                <li><code>image</code> : logo ou visuel du sponsor (cliquable)</li>
+                <li><code>background_image</code> : image de fond de la bannière</li>
+                <li><code>link</code> : URL vers le site du sponsor</li>
+            </ul>
+        </li>
+        <li><strong>Structure HTML générée :</strong>
+            <ul>
+                <li>Balise <code>&lt;section class="sponsor-banner"&gt;</code> stylisée avec des variables CSS dynamiques</li>
+                <li>Zone gauche : titre + texte sponsorisé</li>
+                <li>Zone droite : logo cliquable (s’il existe)</li>
+            </ul>
+        </li>
+        <li><strong>Affichage :</strong> Utilise <code>ob_start()</code> pour capturer et retourner le code HTML. Inclut une feuille de style interne (<code>./css/internal/main.css</code>).</li>
+    </ul>
+
+    <h3>9. view/template.php</h3>
     <ul>
         <li><strong>Fonctions :</strong>
             <ul>
@@ -332,46 +376,6 @@
         <li><strong>Rôle :</strong> Centralise l'affichage de l’en-tête, du menu de navigation, et du footer, en intégrant le statut de session utilisateur (connecté ou non).</li>
     </ul>
 
-    <h3>view/search.php</h3>
-    <ul>
-        <li><strong>Fonction :</strong> <code>html_search()</code></li>
-        <li><strong>But :</strong> Affiche un formulaire de recherche avancée (mot-clé, catégorie, temps de lecture) et les résultats filtrés.</li>
-        <li><strong>Formulaire :</strong>
-            <ul>
-                <li>Champ texte pour le mot-clé.</li>
-                <li>Menu déroulant pour choisir une catégorie (dynamique depuis <code>$category_aa</code>).</li>
-                <li>Sliders pour sélectionner un temps de lecture min et max (1 à 30 minutes).</li>
-            </ul>
-        </li>
-        <li><strong>Résultats :</strong>
-            <ul>
-                <li>Affiche un message si aucun article n'est trouvé.</li>
-                <li>Sinon, affiche un article principal en vedette puis les autres par paires (2 par ligne).</li>
-                <li>Utilise <code>html_article_preview()</code> pour afficher chaque article.</li>
-            </ul>
-        </li>
-    </ul>
-
-    <!--
-
-    <h3>7. sponsor.php</h3>
-    <ul>
-        <li><strong>Fonction :</strong> <code>html_banner()</code></li>
-        <li><strong>Rôle :</strong> Affiche la bannière du sponsor en utilisant les données récupérées (texte, images, lien, couleur).</li>
-    </ul>
-
-    <h3>8. time.php</h3>
-    <ul>
-        <li><strong>Fonctions :</strong>
-            <ul>
-                <li><code>html_time_search_form()</code> : Affiche le formulaire pour rechercher par temps de lecture.</li>
-                <li><code>html_time_list()</code> : Affiche la liste des articles filtrés avec leur temps de lecture calculé via <code>estimate_time()</code>.</li>
-            </ul>
-        </li>
-    </ul>
-</div>
-//////////////////////////////////////////////////
--->
 <hr>
 
 <!-- V. FONCTIONNALITÉS SPÉCIFIQUES POUR LE BACK-END DU GROUPE M (LIVRABLE SERVEUR) -->
