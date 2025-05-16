@@ -84,14 +84,40 @@
         <li><strong>Affichage :</strong>Génère l’en-tête, le contenu de l’article (via <code>html_article_main()</code>) et le pied de page HTML.</li>
     </ul>
 
-    <h3>2. controller/dates.php</h3>
+    <h3>2. controller/article_detail.php</h3>
+    <ul>
+        <li><strong>Fonction :</strong> <code>main_article_detail()</code></li>
+
+        <li><strong>Rôle :</strong> Fournit un fragment HTML détaillé d’un article destiné à être affiché dans une requête AJAX (ex. : overlay ou modal), uniquement accessible aux utilisateurs connectés.</li>
+
+        <li><strong>Conditions d’accès :</strong>
+            <ul>
+                <li>Démarre la session si elle n’est pas active</li>
+                <li>Retourne vide si l’utilisateur n’est pas connecté</li>
+                <li>Redirige vers <code>index.php</code> si la requête n’est pas AJAX (<code>?ajax=1</code> manquant)</li>
+            </ul>
+        </li>
+
+        <li><strong>Traitement :</strong>
+            <ul>
+                <li>Récupère l’article à partir de l’identifiant GET (<code>art_id</code>) via <code>get_article_a()</code></li>
+                <li>Calcule le nombre de mots du contenu et estime le temps de lecture (1 min / 200 mots)</li>
+                <li>Récupère le rôle de l’utilisateur depuis la session</li>
+            </ul>
+        </li>
+
+        <li><strong>Affichage :</strong> Retourne un fragment HTML généré par <code>html_article_detail()</code>, adapté au rôle de l’utilisateur.</li>
+    </ul>
+
+
+    <h3>3. controller/dates.php</h3>
     <ul>
         <li><strong>Ajout :</strong>Fonction<code>main_dates()</code> pour afficher la liste des dates distinctes des articles.</li>
         <li><strong>Dépendances :</strong> Utilise <code>get_all_dates_article()</code> pour récupérer les dates et <code>get_article_counts_by_date()</code> pour compter le nombre d’articles par date.</li>
         <li><strong>Affichage :</strong> Génère une page HTML avec l’en-tête, la liste des dates via <code>html_date_sidebar()</code> et le pied de page.</li>
     </ul>
 
-    <h3>3. controller/favorite.php</h3>
+    <h3>4. controller/favorite.php</h3>
     <ul>
         <li><strong>Ajout :</strong> Fonction <code>main_favorites()</code> qui gère l'ajout, la suppression, le vidage et l'affichage des articles favoris.</li>
         <li><strong>Dépendances :</strong> Utilise <code>get_article_a()</code> et <code>get_menucsv()</code> du modèle, ainsi que <code>html_favorite_articles()</code>, <code>html_head()</code> et <code>html_foot()</code> des vues.</li>
@@ -111,7 +137,7 @@
     </ul>
 
 
-    <h3>4. controller/home.php</h3>
+    <h3>5. controller/home.php</h3>
     <ul>
         <li><strong>Ajout :</strong> Fonction <code>main_home()</code> pour afficher la page d’accueil du site.</li>
         <li><strong>Données :</strong> Récupère les 10 derniers articles de la catégorie <code>id = 146</code> ("On n’est pas des pigeons") grâce à <code>get_latest_articles_by_category()</code>.</li>
@@ -119,7 +145,7 @@
         <li><strong>Affichage :</strong> Utilise <code>html_all_articles_main()</code> pour afficher les articles, avec un en-tête (menu) et un pied de page.</li>
     </ul>
 
-    <h3>5. controller/login.php</h3>
+    <h3>6. controller/login.php</h3>
     <ul>
         <li><strong>Ajout :</strong> Fonction <code>main_login()</code> qui gère la connexion et déconnexion des utilisateurs.</li>
         <li><strong>Connexion :</strong> Récupération des identifiants via POST. Vérification avec la fonction <code>login_validate()</code> (modèle).</li>
@@ -129,7 +155,7 @@
         <li><strong>Affichage :</strong> Statut de l’utilisateur, message flash, formulaire ou bouton de déconnexion selon l’état connecté ou non.</li>
     </ul>
 
-    <h3>6. controller/presse.php</h3>
+    <h3>7. controller/presse.php</h3>
     <ul>
         <li><strong>Ajout :</strong> Fonction <code>main_press()</code> qui permet d’afficher les articles filtrés par date (via <code>?date=YYYY-MM-DD</code>).</li>
         <li><strong>Paramètre GET :</strong> Si une date est présente dans l’URL, les articles correspondants sont récupérés avec <code>get_articles_by_date()</code>.</li>
@@ -138,7 +164,7 @@
         <li><strong>Affichage :</strong> Utilisation de <code>html_all_articles_main()</code> pour afficher les articles dans la vue.</li>
     </ul>
 
-    <h3>7. controller/search.php</h3>
+    <h3>8. controller/search.php</h3>
     <ul>
         <li><strong>Ajout :</strong> Fonction <code>main_search()</code> qui affiche un formulaire de recherche multi-critères et les résultats associés.</li>
         <li><strong>Filtres de recherche :</strong>
@@ -153,7 +179,7 @@
         <li><strong>Affichage :</strong> Génère la page avec l’en-tête, le formulaire de recherche et les résultats via <code>html_search()</code>, suivi du pied de page.</li>
     </ul>
 
-    <h3>8. controller/sponsor.php</h3>
+    <h3>9. controller/sponsor.php</h3>
     <ul>
         <li><strong>Ajout :</strong> Fonction <code>main_sponsor()</code> qui affiche une page statique dédiée aux sponsors.</li>
         <li><strong>Données :</strong> Récupère le contenu sponsorisé (ex. : bannière, message) via la fonction <code>get_sponsor_content()</code>.</li>
@@ -162,7 +188,7 @@
     </ul>
 
 
-    <h3>9. controller/static.php</h3>
+    <h3>10. controller/static.php</h3>
     <ul>
         <li><strong>Fonction :</strong> <code>main_static()</code> permet d'afficher une page HTML statique (ex. : à propos, mentions légales).</li>
         <li><strong>Dépendances :</strong> Utilise <code>get_menucsv()</code> pour générer le menu, et <code>file_get_contents()</code> pour charger le contenu statique depuis <code>asset/static_content/about.html</code>.</li>
@@ -378,7 +404,50 @@
 
 <hr>
 
-<!-- V. FONCTIONNALITÉS SPÉCIFIQUES POUR LE BACK-END DU GROUPE M (LIVRABLE SERVEUR) -->
+    <h3>10. public/js/detail.js</h3>
+    <ul>
+        <li><strong>Rôle :</strong> Gérer dynamiquement l’affichage des détails d’un article au survol (hover), via AJAX, pour les utilisateurs connectés uniquement.</li>
+
+        <li><strong>Fonctionnalités principales :</strong>
+            <ul>
+                <li><code>isUserLoggedIn()</code> : Vérifie si l'utilisateur est connecté en testant :
+                    <ul>
+                        <li>La présence d’un cookie <code>PHPSESSID</code></li>
+                        <li>La présence dans le DOM d’un élément avec <code>.user-status.logged-in</code></li>
+                    </ul>
+                </li>
+
+                <li><code>loadArticleDetail($article)</code> :
+                    <ul>
+                        <li>Extrait l’ID de l’article depuis son lien <code>art_id=</code></li>
+                        <li>Envoie une requête AJAX vers <code>index.php?page=article_detail&ajax=1&art_id=...</code></li>
+                        <li>Insère le fragment HTML retourné dans un overlay <code>.article-detail-overlay</code></li>
+                        <li>Évite de recharger les détails déjà consultés (grâce à <code>loadedDetails</code>)</li>
+                    </ul>
+                </li>
+
+                <li><code>unloadArticleDetail($article)</code> : Cache l’overlay au départ du curseur</li>
+            </ul>
+        </li>
+
+        <li><strong>Gestion des événements :</strong>
+            <ul>
+                <li>Si l’utilisateur est connecté : active les événements <code>mouseenter</code> et <code>mouseleave</code> pour charger ou cacher les détails</li>
+                <li>Si l’utilisateur n’est pas connecté : désactive les overlays de détail (comportement personnalisé possible)</li>
+            </ul>
+        </li>
+
+        <li><strong>Remarques :</strong>
+            <ul>
+                <li>Le script repose sur jQuery</li>
+                <li>Les éléments cibles sont <code>.wsj-article-item</code> et <code>.wsj-featured-item</code></li>
+            </ul>
+        </li>
+    </ul>
+
+
+
+    <!-- V. FONCTIONNALITÉS SPÉCIFIQUES POUR LE BACK-END DU GROUPE M (LIVRABLE SERVEUR) -->
 <div class="section">
     <h2>V. Fonctionnalités Spécifiques pour le livrable serveur</h2>
     <ul>
@@ -531,7 +600,7 @@
         <strong>Nos Bugs identifiés</strong>
         <ul>
         <li>au niveau du formulaire de recherche, apres avoir effectué une recherche, dès que les articles trouvé apparait quand on veut changer la couleur de police le formulaire de recherche se rafraichit</li>
-        <li>Recharge de la page a propos... en cliquant sur recharge la page</li>
+        <li>Recharge de la page a propos... en cliquant sur recharge la page< /li>
     </ul>
         <hr>
         <!-- VI. CONCLUSION -->
