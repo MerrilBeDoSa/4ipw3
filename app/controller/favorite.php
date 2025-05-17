@@ -70,6 +70,18 @@ function main_favorites(): string
             }
         }
     }
+    // Gestion des évaluations
+    if (isset($_POST['rate_article'])) {
+        $article_id = (int)$_POST['article_id'];
+        $rating = (int)$_POST['rating'];
+
+        // Validation
+        if ($rating >= 1 && $rating <= 5) {
+            $ratings = isset($_COOKIE['article_ratings']) ? json_decode($_COOKIE['article_ratings'], true) : [];
+            $ratings[$article_id] = $rating;
+            setcookie('article_ratings', json_encode($ratings), time() + 30 * 24 * 60 * 60, '/');
+        }
+    }
 
     return join("\n", [
         html_head($menu),

@@ -4,6 +4,7 @@
 
 body
 {
+    scroll-behavior: smooth;
     font-size: medium;
     background-color: whitesmoke;
     /* font-size:10px; */
@@ -242,6 +243,7 @@ time {
 }
 
 .wsj-featured-item {
+    margin : 20px;
     display: flex;
     flex-direction: column;
 }
@@ -1227,11 +1229,7 @@ liste de dates
     font-weight: 600;
 }
 
-.detail-separator {
-    margin: 8px 0;
-    border: 0;
-    border-top: 1px solid #eee;
-}
+
 
 /* Assurez-vous que les articles ont position relative */
 .wsj-article-item, .wsj-featured-item {
@@ -1256,7 +1254,7 @@ liste de dates
 }
 
 /* Dans main.css */
-.wsj-article-item:not(.logged-in):hover::after {
+.wsj-article-item:not(.logged-in):hover::before {
     content: "Connectez-vous pour voir les détails";
     position: absolute;
     bottom: 0;
@@ -1266,7 +1264,23 @@ liste de dates
     color: #6c757d;
 }
 
-
+.article-detail-overlay {
+    position: absolute;
+    background: white;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+    max-width: 300px;
+}
+.detail-content {
+    font-size: 0.9em;
+}
+.detail-separator {
+    margin: 5px 0;
+    border-color: #eee;
+}
 
 
 

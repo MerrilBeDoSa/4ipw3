@@ -1,6 +1,11 @@
 <?php
 require_once __DIR__ . '/../model/common.php';
 
+/**
+ * Génère le HTML d'un article complet
+ * @param array|null $article_a Données de l'article
+ * @return string HTML de l'article complet ou message d'erreur
+ */
 function html_article_main($article_a)
 {
     if ($article_a === null) {
@@ -50,7 +55,12 @@ function html_article_main($article_a)
     return ob_get_clean();
 }
 
-
+/**
+ * Génère un aperçu d'article (version courte)
+ * @param array $article Données de l'article
+ * @param bool $is_featured Si l'article est en vedette
+ * @return string HTML de l'aperçu
+ */
 function html_article_preview($article, $is_featured = false)
 {
     // Verification et remplacement des valeurs null
@@ -121,8 +131,12 @@ function html_article_preview($article, $is_featured = false)
     return ob_get_clean();
 }
 
-
-
+/**
+ * Génère la grille complète des articles
+ * @param array $article_aa Liste des articles
+ * @param bool $is_search Si c'est un résultat de recherche
+ * @return string HTML de la grille d'articles
+ */
 function html_all_articles_main($article_aa, $is_search = false)
 {
     ob_start();
@@ -159,7 +173,12 @@ function html_all_articles_main($article_aa, $is_search = false)
 
     return ob_get_clean();
 }
-
+/**
+ * Génère les détails techniques d'un article selon le rôle
+ * @param array $article Données de l'article
+ * @param string $role 'admin' ou 'user'
+ * @return string HTML des détails
+ */
 function html_article_detail(array $article, string $role): string {
     $date = $article['date_published'] ? date('d/m/Y', strtotime($article['date_published'])) : '';
     $category = htmlspecialchars($article['category'] ?? '');
@@ -168,15 +187,21 @@ function html_article_detail(array $article, string $role): string {
 
     ob_start(); ?>
     <div class="detail-content">
-        <p><strong>Date :</strong> <?= $date ?></p>
-        <p><strong>Catégorie :</strong> <?= $category ?></p>
-        <p><strong>Lecture :</strong> <?= $reading_time ?> min</p>
-
         <?php if ($role === 'admin'): ?>
             <hr class="detail-separator">
+            <p><strong>Date :</strong> <?= $date ?></p>
+            <p><strong>Lecture :</strong> <?= $reading_time ?> min</p>
+            <p><strong>Catégorie :</strong> <?= $category ?></p>
             <p><strong>ID :</strong> <?= $article['id'] ?? '' ?></p>
-            <p><strong>ID Image :</strong> <?= $article['image_id'] ?? '' ?></p>
+            <p><strong>Lecture :</strong> <?= $reading_time ?> min</p>
+            <p><strong>nombre de mots :</strong> <?= $word_count ?></p>
             <p><strong>Mots :</strong> <?= $word_count ?></p>
+        <?php endif; ?>
+        <?php if ($role === 'user'): ?>
+            <hr class="detail-separator">
+            <p><strong>Date :</strong> <?= $date ?></p>
+            <p><strong>Lecture :</strong> <?= $reading_time ?> min</p>
+            <p><strong>Catégorie :</strong> <?= $category ?></p>
         <?php endif; ?>
     </div>
     <?php

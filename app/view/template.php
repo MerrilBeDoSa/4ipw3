@@ -19,9 +19,10 @@ display_user_status();
  * Génère la partie `<head>` et l'entête avec le menu.
  *
  * @param array $menu_array Tableau contenant les éléments du menu.
+ * @param int|null $current_art_id ID de l'article courant (pour le préserver)
  * @return string
  */
-function html_head($menu_array = [])
+function html_head($menu_array = [], $current_art_id = null)
 {
     $debug = false;
     // Sous-menu
@@ -42,9 +43,7 @@ function html_head($menu_array = [])
         ["Health", "health"],
         ["Style", "style"],
         ["Sports", "sports"]
-
     ];
-
 
     // Valide le tableau des menus
     $menu_array = validate_menu_array($menu_array);
@@ -66,7 +65,7 @@ function html_head($menu_array = [])
         <script src="./js/internal/detail.js"></script>
     </head>
 
-    <!-- le bitmoji keurr change visuellement apres cliquage sans redirection de la page -->
+    <!-- l'émoji coeur change visuellement apres cliquage sans redirection de la page -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             document.querySelectorAll('.wsj-heart-icon').forEach(icon => {
@@ -91,7 +90,6 @@ function html_head($menu_array = [])
 
     <!-- option de présention-->
 <?php
-
 // Appliquer les préférences depuis les cookies
 $theme_class = '';
 $font_class = '';
@@ -120,7 +118,6 @@ if (!empty($_COOKIE['font'])) {
 }
 ?>
 
-
     <body class="<?= $theme_class ?> <?= $font_class ?>">
 
     <header>
@@ -132,6 +129,11 @@ if (!empty($_COOKIE['font'])) {
             <form method="get" style="display:flex; gap:1rem; align-items:center; margin-top: 1rem;">
                 <input type="hidden" name="page" value="<?= htmlspecialchars($_GET['page'] ?? 'home') ?>">
 
+                <!-- Ajout du champ caché pour préserver l'ID d'article -->
+                <?php if ($current_art_id): ?>
+                    <input type="hidden" name="art_id_preserve" value="<?= (int)$current_art_id ?>">
+                <?php endif; ?>
+
                 <label>🎨 Thème :
                     <select name="theme" onchange="this.form.submit()">
                         <option value="light" <?= ($_COOKIE['theme'] ?? '') === 'light' ? 'selected' : '' ?>>Light</option>
@@ -141,7 +143,6 @@ if (!empty($_COOKIE['font'])) {
                 </label>
 
                 <!-- 🔤 Options de présentation font -->
-
                 <label>🔤 Police :
                     <select name="font" onchange="this.form.submit()">
                         <option value="black" <?= ($_COOKIE['font'] ?? '') === 'black' ? 'selected' : '' ?>>Black</option>
@@ -151,7 +152,6 @@ if (!empty($_COOKIE['font'])) {
                 </label>
             </form>
 
-
             <!-- Menu principal -->
             <div class="menu-links">
                 <?php
@@ -160,13 +160,12 @@ if (!empty($_COOKIE['font'])) {
                     $title = htmlspecialchars($menu[0], ENT_QUOTES, 'UTF-8');
                     $url = htmlspecialchars($menu[1], ENT_QUOTES, 'UTF-8');
                     echo <<<HTML
-                    <a href="?page={$url}">{$title}</a> |
+                <a href="?page={$url}">{$title}</a> |
 HTML;
                 }
                 ?>
             </div>
         </div>
-
     </header>
 
     <!-- Sous-menu (nav) -->
@@ -176,13 +175,12 @@ HTML;
             $title = $sub_menu[0];
             $url = $sub_menu[1];
             echo <<< HTML
-          <a href="?category={$url}">{$title}</a>
+        <a href="?category={$url}">{$title}</a>
 HTML;
         }
         ?>
         <div class="user-status-bar">
             <?php echo display_user_status(); ?> <!-- Affiche le statut utilisateur -->
-        </div>
         </div>
     </nav>
     <?php
@@ -196,6 +194,7 @@ HTML;
 
     return ob_get_clean();
 }
+
 
 /**
  * Génère le pied de page HTML.
@@ -242,35 +241,4 @@ function validate_menu_array($menu_array)
         return isset($menu[0], $menu[1]) && is_string($menu[0]) && is_string($menu[1]);
     });
 }
-
-
-
-
-
-
-
-
-
-
-//function date_list(array $dates): string
-//{
-//    ob_start();
-//    ?>
-<!--    <aside class="date-sidebar">-->
-<!--        <h2>📅 Dates récentes</h2>-->
-<!--        <ul class="date-list">-->
-<!--            --><?php //foreach ($dates as $date) { ?>
-<!--                <li>📰-->
-<!--                    <a href="?date=--><?php //= urlencode($date) ?><!--">-->
-<!--                        --><?php //= htmlspecialchars($date, ENT_QUOTES, 'UTF-8') ?>
-<!--                    </a>-->
-<!--                </li>-->
-<!--            --><?php //} ?>
-<!--        </ul>-->
-<!--    </aside>-->
-<!--    --><?php
-//    return ob_get_clean();
-//}
-
-
 ?>

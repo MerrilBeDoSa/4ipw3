@@ -28,19 +28,20 @@ function main_article(): string
         exit;
     }
 
-
     $menu = get_menucsv();
-    $art_id = $_GET['art_id'] ?? null;
+
+    // Récupérer l'ID d'article depuis GET ou depuis les paramètres de thème/font
+    $art_id = $_GET['art_id'] ?? $_GET['art_id_preserve'] ?? null;
 
     // Validation de l'ID
     if (!$art_id || !ctype_digit($art_id)) {
-        return html_head() . '<h1>ID d\'article invalide</h1>' . html_foot();
+        return html_head($menu) . '<h1>ID d\'article invalide</h1>' . html_foot();
     }
 
     $article_a = get_article_a((int)$art_id);
 
     return join("\n", [
-        html_head($menu),
+        html_head($menu, (int)$art_id), // On passe l'ID d'article à html_head
         html_article_main($article_a),
         html_foot(),
     ]);

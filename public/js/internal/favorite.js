@@ -52,17 +52,6 @@ function display_cart(cart_data)
 {
     console.log(cart_data);
 
-    // $.cookie("favorite", 1, { expires : 10 });
-    // console.log( $.cookie("favorite"));
-    // console.log(Cookies.get("favorite"));
-    // console.log(readCookie('favorite'));
-
-    // on efface le panier courant
-    // $("ul#panier_contenu").html("");
-
-    // on recrée les balises <li>
-    // boucle sur le panier avec string et méthode .html()
-    // remarque : il faut que ul#panier_contenu soit défini; si non, aucun effet.
     let s = '';
     $.each( cart_data, function( i, v )
     {
@@ -71,7 +60,6 @@ function display_cart(cart_data)
     $("ul#panier_contenu").html(s);
 
     // activer / désactiver les boutons add/del correspondant
-    // https://stackoverflow.com/questions/6116474/how-to-find-if-an-array-contains-a-specific-string-in-javascript-jquery
 
     // on met tous les boutons "retirer favoris" à display:none
     $('button.del_favorite').css('display','none');
@@ -86,47 +74,5 @@ function display_cart(cart_data)
         $('button.del_favorite[for="'+id+'"]').css('display','block');
     });
 
-    // $.each( $('article'), function( i, el ) {
-    //     const id = $(this).attr('id');
-    //     const foundPresent = cart_data.includes( id );
-    //     console.log(foundPresent);
-    //     if(foundPresent)
-    //     {
-    //         // produit in panier => add KO, del OK
-    //         $('button.add[for="'+id+'"]').attr('disabled','disabled');
-    //         $('button.del[for="'+id+'"]').removeAttr('disabled');
-    //     }
-    //     else
-    //     {
-    //         // produit out panier => add OK, del KO
-    //         $('button.del[for="'+id+'"]').attr('disabled','disabled');
-    //         $('button.add[for="'+id+'"]').removeAttr('disabled');
-    //     }
-    // });
-
-    /*
-    // autre solution :
-    // écrire une boucle sur tous les boutons "ajouter"
-    $.each( $("button.add"), function() {
-        var prod = $(this).attr('for') ;
-        // alert(prod);
-        var foundPresent = cart_data.includes(prod); // true/false
-        if(foundPresent)
-        {
-            $(this).attr( 'disabled', 'disabled' );
-        }
-        else
-        {
-            $(this).removeAttr( 'disabled');
-        }
-    });
-
-    // mais alors il faut aussi écrire une boucle
-    // sur tous les boutons "retirer"
-    // => solution plus longue et moins maintenable
-    $.each( $("button.delete_product"), function( i, v ) {
-        ...
-    });
-    */
 }
 

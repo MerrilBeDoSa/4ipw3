@@ -1,6 +1,5 @@
 <?php
-// Démarre la session immédiatement
-//session_start();
+
 
 // Inclure le modèle
 require_once realpath(__DIR__ . '/../model/login.php');
@@ -87,6 +86,7 @@ HTML;
 
 function display_user_status() {
     if (isset($_SESSION['login']['is_logged']) && $_SESSION['login']['is_logged']) {
+
         $name = htmlspecialchars($_SESSION['login']['name']);
         return "<div class='user-status logged-in'>Bonjour, <strong>$name</strong> 👋. Vous êtes identifié.</div>";
     } else {

@@ -9,13 +9,16 @@ function main_article_detail() {
         exit;
     }
 
-    // Démarrer la session si elle n'est pas active
+
+    // Debug: Afficher le contenu de la session
+    error_log("Session data: " . print_r($_SESSION, true));
+
+    // VDémarrer la session si elle n'est pas active
     if (session_status() !== PHP_SESSION_ACTIVE) {
         session_start();
     }
 
-    // Vérifier strictement la connexion
-    if (!isset($_SESSION['login']['is_logged']) || !$_SESSION['login']['is_logged']) {
+    if (!isset($_SESSION['login']['is_logged'])) {
         header('HTTP/1.0 403 Forbidden');
         exit;
     }
@@ -30,12 +33,13 @@ function main_article_detail() {
     // Calcul des métriques
     $article['word_count'] = str_word_count(strip_tags($article['content'] ?? ''));
     $article['reading_time'] = ceil($article['word_count'] / 200);
-
-    // Valeur par défaut pour la catégorie
     $article['category'] = $article['category'] ?? 'Général';
 
-    // Récupération du rôle
-    $role = $_SESSION['login']['role'] ?? 'user';
+
+    // Récupération du rôle avec validation
+    $role = ($_SESSION['login']['role'] ?? 'user') === 'admin' ? 'admin' : 'user';
+
+    error_log("Role determined: " . $role); // Debug
 
     return html_article_detail($article, $role);
 }
