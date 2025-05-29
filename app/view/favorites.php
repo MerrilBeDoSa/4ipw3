@@ -1,5 +1,6 @@
 <?php
 
+// le but est d'afficher une table des articles ajoutés en favoris par l'utilisateur
 function html_favorite_articles(array $articles): string
 {
     $count = count($articles);
@@ -50,6 +51,7 @@ function html_favorite_articles(array $articles): string
                     <td><?= htmlspecialchars($article['hook']) ?></td>
                     <td><?= htmlspecialchars($article['date_published']) ?></td>
                     <td>
+                        <!-- supprime l'article des favoris via le lien -->
                         <a href="?page=favorites&action=remove&id=<?= (int)$article['id'] ?>"
                            class="btn btn-sm btn-danger">
                             Retirer

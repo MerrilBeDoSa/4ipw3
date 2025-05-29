@@ -13,6 +13,7 @@ function main_press(): string
     // si une date est passée en paramètre, on filtre les articles
     if (!empty($_GET['date'])) {
         $date = $_GET['date'];
+        // articles correspondant si une date est présente dans l'url
         $articles = get_articles_by_date($date);
     } else {
         // sinon on affiche tout (ou rien, selon mon choix)
